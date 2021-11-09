@@ -34,7 +34,7 @@ jobs:
           context: .
           file: ./lightowl.dockerfile
           push: true
-          tags: raznak/lightowl-server:latest
+          tags: lightowlproject/server:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -44,7 +44,7 @@ jobs:
           context: .
           file: ./collector.dockerfile
           push: true
-          tags: raznak/lightowl-collector:latest
+          tags: lightowlproject/collector:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -54,7 +54,7 @@ jobs:
           context: .
           file: ./worker.dockerfile
           push: true
-          tags: raznak/lightowl-worker:latest
+          tags: lightowlproject/worker:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -62,14 +62,3 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-
-      # - uses: actions/checkout@v2
-      # - name: Build the Docker image
-      #   run: |
-      #     # Build docker Prod image
-      #     docker build . --file lightowl.dockerfile --tag raznak/lightowl:lightowl-0.1
-      #     docker push raznak/lightowl:lightowl-0.1
-
-      #     # Build docker DEV image
-      #     docker build . --file lightowl.dev.dockerfile --tag raznak/lightowl:lightowl-dev-0.1
-      #     docker push raznak/lightowl:lightowl-dev-0.1
