@@ -1,7 +1,7 @@
 from toolkits.paginate import TableParam
 from fastapi import APIRouter, Depends
 from ..common import BothAuthParams
-from .schema import LogsSchema
+from .schema import ChartSchema, LogsSchema
 from toolkits.influx import Influx
 import math
 
@@ -24,15 +24,15 @@ async def get_logs(logs_schema: LogsSchema = Depends(), table_params: TableParam
 
 
 @router.get("/chart", include_in_schema=False)
-async def get_chart(logs_schema: LogsSchema = Depends(), app = Depends(BothAuthParams)):
+async def get_chart(chart_schema: ChartSchema = Depends(), app = Depends(BothAuthParams)):
     influx_client = Influx()
-    tmp_data = influx_client.chart(logs_schema)
+    tmp_data = influx_client.chart(chart_schema)
 
-    data: list = []
-    for tmp in tmp_data:
-        data.append((tmp["time"], tmp["count"]))
+    # data: list = []
+    # for tmp in tmp_data:
+    #     data.append((tmp["time"], tmp["count"]))
 
-    return data
+    return tmp_data
 
 
 @router.get("/measurements", include_in_schema=False)

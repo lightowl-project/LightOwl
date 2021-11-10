@@ -110,7 +110,7 @@ async def get_agents(all: bool = False, pagination: TableParam = Depends(), app 
     if all:
         return [AgentSchema(**a.to_mongo()) for a in Agent.objects()]
 
-    result: dict = paginate(Agent, pagination, AgentSchema)#, search={"hostname": {"$ne": "LightOwl Server"}})
+    result: dict = paginate(Agent, pagination, AgentSchema)
     return result
 
 

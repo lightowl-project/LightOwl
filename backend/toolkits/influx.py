@@ -1,5 +1,5 @@
 from influxdb import InfluxDBClient, exceptions
-from apps.metrics.schema import LogsSchema
+from apps.metrics.schema import ChartSchema, LogsSchema
 from toolkits.paginate import TableParam
 from config import settings
 
@@ -98,7 +98,7 @@ class Influx:
     def logs(self, logs_schema: LogsSchema, table_param: TableParam):
         self.__connect()
         time_format: str = "%Y-%m-%d %H:%M:%S"
-        where_sql: list = [f"time > '{logs_schema.dateStart.strftime(time_format)}'", f"time < '{logs_schema.dateEnd.strftime(time_format)}'"]
+        where_sql: list = [f"time > '{logs_schema.date_start.strftime(time_format)}'", f"time < '{logs_schema.date_end.strftime(time_format)}'"]
 
         if logs_schema.agent:
             where_sql.append(f"lightowl_id = '{logs_schema.agent}'")
@@ -136,21 +136,25 @@ class Influx:
         except IndexError:
             return [], 0        
 
-    def chart(self, logs_schema: LogsSchema):
+    def chart(self, chart_schema: ChartSchema):
         self.__connect()
         time_format: str = "%Y-%m-%d %H:%M:%S"
-        where_sql: list = [f"time > '{logs_schema.dateStart.strftime(time_format)}'", f"time < '{logs_schema.dateEnd.strftime(time_format)}'"]
-        if logs_schema.agent:
-            where_sql.append(f"lightowl_id = '{logs_schema.agent}'")
+        where_sql: list = [f"time > '{chart_schema.date_start.strftime(time_format)}'", f"time < '{chart_schema.date_end.strftime(time_format)}'"]
+        if chart_schema.agent:
+            where_sql.append(f"lightowl_id = '{chart_schema.agent}'")
 
-        mapping: dict = self.get_mapping(logs_schema.measurement)
+        mapping: dict = self.get_mapping(chart_schema.measurement)
 
         key: str = list(mapping.keys())[0]
-        query_sql: str = f"SELECT count({key}) as count FROM {logs_schema.measurement} WHERE {' AND '.join(where_sql)}"
-        group_by: str = f"time({logs_schema.interval})"
-        query_sql: str = f"{query_sql} GROUP BY {group_by}"
+        query_sql: str = f"SELECT count({key}) as count FROM {chart_schema.measurement} WHERE {' AND '.join(where_sql)}"
+
+        group_by: list = [f'time({chart_schema.interval})']
+        if chart_schema.group_by:
+            group_by.append(chart_schema.group_by)            
+
+        query_sql: str = f"{query_sql} GROUP BY {', '.join(group_by)}"
 
         print(query_sql)
         tmp_results = self.execute_simple_query(query_sql)
-        return list(tmp_results.get_points())
+        return tmp_results.raw
         

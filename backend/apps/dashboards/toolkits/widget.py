@@ -30,7 +30,7 @@ class WidgetData:
             return f"mean({params.field})"
 
     def __group_by(self, params):
-        tmp_group_by = []
+        tmp_group_by: list = []
         if params.group_by:
             tmp_group_by = [params.group_by]
             
