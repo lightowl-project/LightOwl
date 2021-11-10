@@ -36,7 +36,11 @@ middlewares = [
     )
 ]
 
-app = FastAPI(debug=settings.DEBUG, middleware=middlewares)
+app = FastAPI(
+    debug=settings.DEBUG,
+    middleware=middlewares,
+    title="LightOwl",
+)
 
 real_time = RealTime()
 

@@ -60,11 +60,6 @@ export default {
 
   mounted() {
     this.initWebSocket()
-
-    // TODO: REMOVE
-    setTimeout(() => {
-      EventBus.$emit("alert")
-    }, 2000)
   },
 
   methods: {

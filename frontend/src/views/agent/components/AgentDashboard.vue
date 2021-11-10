@@ -3,12 +3,6 @@
     <el-tabs v-model="selectedTab">
       <el-tab-pane v-for="input in inputs" :key="input._id" :name="input._id">
         <span slot="label">
-          <span v-if="input.plugin.icon">
-            <i :class="input.plugin.icon" />
-          </span>
-          <span v-else>
-            <img width="20px" :src="renderImage(input.plugin.img)">
-          </span>
           {{ input.plugin.title }}
         </span>
         <component :is="dashboards[input.plugin_name.toLowerCase()]" :ref="input._id" :agent_id="agent_id" :date-range="dateRange" />

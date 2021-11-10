@@ -23,7 +23,7 @@
         </el-select>
       </el-menu-item>
       <el-menu-item index="3">
-        <el-select v-model="selectedAgent" :placeholder="$t('Agent')" size="mini" @change="fetchData()">
+        <el-select v-model="selectedAgent" clearable :placeholder="$t('Agent')" size="mini" @change="fetchData()">
           <el-option
             v-for="agent in agents"
             :key="agent._id"
@@ -81,6 +81,7 @@
         title=""
         height="300"
         :queries="queries"
+        :dateRange="dateRange"
         :options="chartOptions"
         @zoom="beforeZoom"
       />
@@ -177,8 +178,7 @@ export default defineComponent({
       legend: {
         display: false,
         position: "bottom"
-      },
-      colors: ["#F49B51"]
+      }
     },
     logs: [],
     popoverDateOpen: false,
@@ -281,6 +281,7 @@ export default defineComponent({
     fetchMeasurements(init) {
       request.get("/api/v1/metrics/measurements").then((response) => {
         this.measurements = response.data
+        this.selectedData = this.measurements[0]
         if (init) this.selectedData = init
       })
     },
@@ -329,22 +330,36 @@ export default defineComponent({
         endDate: endDate
       })
 
+      const params_graph = {
+        date_start: startDate.format("YYYY-MM-DD HH:mm:ss"),
+        date_end: endDate.format("YYYY-MM-DD HH:mm:ss"),
+        measurement: this.selectedData,
+        agent: this.selectedAgent,
+        group_by: "host",
+        interval: this.interval
+      }
+
       const params = {
-        dateStart: startDate.format("YYYY-MM-DD HH:mm:ss"),
-        dateEnd: endDate.format("YYYY-MM-DD HH:mm:ss"),
+        date_start: startDate.format("YYYY-MM-DD HH:mm:ss"),
+        date_end: endDate.format("YYYY-MM-DD HH:mm:ss"),
         measurement: this.selectedData,
         sort: `${this.sort.prop}|${this.sort.order}`,
         page: this.pagination.page,
         per_page: this.pagination.perPage,
         interval: interval,
-        agent: this.selectedAgent
+        agent: this.selectedAgent,
       }
 
       request
-        .get("/api/v1/metrics/chart", { params: params })
+        .get("/api/v1/metrics/chart", { params: params_graph })
         .then((response) => {
-          const data = this.formatValues(response.data)
-          this.$refs.graph.updateSeries([{ name: "Count", data: data }])
+          const data = []
+          for (const serie of response.data.series) {
+            let values = this.formatValues(serie.values)
+            data.push({ name: serie.tags.host, data: values })
+          }
+
+          this.$refs.graph.updateSeries(data)
         })
 
       request

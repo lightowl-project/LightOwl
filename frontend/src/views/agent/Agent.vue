@@ -219,7 +219,7 @@
                   />
                   <img
                     v-else-if="input.plugin.img"
-                    width="70px"
+                    :width="input.plugin.img_size"
                     :src="renderImage(input.plugin.img)"
                   >
                 </p>

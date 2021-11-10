@@ -9,6 +9,9 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      <el-link type="info" :href="renderDocHref()" style="margin-right: 20px;">
+        <i class="fa fa-file-alt fa-2x" />
+      </el-link>
       <el-dropdown class="avatar-container avatar-link" trigger="click">
         <div class="avatar-wrapper">
           <i class="fa fa-user fa-2x" />
@@ -48,6 +51,9 @@ export default {
     async logout() {
       await this.$store.dispatch("user/logout")
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    renderDocHref() {
+      return `https://${location.hostname}/docs`
     }
   }
 }
