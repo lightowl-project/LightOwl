@@ -18,4 +18,4 @@ class Fail2ban(BaseModel):
             logo = f.read()
 
         img: str = base64.b64encode(logo)
-        img_size: str = "120px"
+        img_size: str = "220px"

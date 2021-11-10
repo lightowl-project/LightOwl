@@ -3,6 +3,7 @@ from typing import List, Optional
 from enum import Enum
 import validators
 import ipaddress
+import base64
 
 
 class MethodEnum(str, Enum):
@@ -61,12 +62,12 @@ class HTTPResponse(BaseModel):
 
     username: Optional[str] = Field(
         title="Username",
-        description="Opitonal HTTP Basic Auth Credentials",
+        description="Optional HTTP Basic Auth Credentials",
     )
 
     password: Optional[str] = Field(
         title="Password",
-        description="Opitonal HTTP Basic Auth Credentials",
+        description="Optional HTTP Basic Auth Credentials",
     )
 
     response_body_field: Optional[str] = Field(
@@ -93,7 +94,7 @@ class HTTPResponse(BaseModel):
     response_status_code: Optional[ResponseEnum] = Field(
         200,
         title="Expected Response Status Code",
-        description='The status code of the response is compared to this value. If they match, the fiel "response_status_code_match" will be 1, otherwise it will be 0. If the expected status code is 0, the check is disabled and the field will not be added'
+        description='The status code of the response is compared to this value. If they match, the field "response_status_code_match" will be 1, otherwise it will be 0. If the expected status code is 0, the check is disabled and the field will not be added'
     )
 
     insecure_skip_verify: Optional[bool] = Field(
@@ -123,20 +124,21 @@ class HTTPResponse(BaseModel):
     #     advanced=True
     # )
 
-    @validator("urls")
-    def validate_urls(cls, v):
-        for i in v:
-            try:
-                ipaddress.ip_address(i)
-            except ValueError:
-                if not validators.url(i):
-                    raise ValueError(f"{i} is not a valid IP Address or URL")
+    # @validator("urls")
+    # def validate_urls(cls, v):
+    #     for i in v:
+    #         try:
+    #             ipaddress.ip_address(i)
+    #         except ValueError:
+    #             if not validators.url(i):
+    #                 raise ValueError(f"{i} is not a valid IP Address or URL")
 
-        return v
+    #     return v
     
     class Config:
         color: str = "#f49b51"
-        icon: str = "fa fa-route"
-        metrics: dict = {
-            "result_code": "success = 0, no such host = 1, ping error = 2"
-        }
+        with open("./plugins/http_response/logo/http_response.png", 'rb') as f:
+            logo = f.read()
+
+        img: str = base64.b64encode(logo)
+        img_size: str = "80px"

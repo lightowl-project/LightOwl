@@ -23,3 +23,4 @@ class Redis(BaseModel):
             logo = f.read()
 
         img = base64.b64encode(logo)
+        img_size: str = "250px"

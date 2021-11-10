@@ -88,4 +88,4 @@ class Elasticsearch(BaseModel):
             logo = f.read()
 
         img: str = base64.b64encode(logo)
-        img_size: str = "100px"
+        img_size: str = "300px"

@@ -24,4 +24,4 @@ class Postgresql(BaseModel):
             logo = f.read()
 
         img = base64.b64encode(logo)
-        img_size: str = "80px"
+        img_size: str = "340px"
