@@ -67,7 +67,9 @@ export default defineComponent({
     banned: 0,
 
     last: {
-      fail2ban: ["failed", "banned"]
+      fail2ban: {
+        fields: ["failed", "banned"]
+      }
     },
 
     max: {},

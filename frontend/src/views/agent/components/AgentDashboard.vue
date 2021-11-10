@@ -124,10 +124,9 @@ export default defineComponent({
           this.fetchData()
         }, 1000)
 
-        // TODO: UNCOMMENT
-        // this.dash_interval = setInterval(() => {
-        //   this.fetchData()
-        // }, 10000)
+        this.dash_interval = setInterval(() => {
+          this.fetchData()
+        }, 10000)
       })
     },
 
@@ -167,15 +166,16 @@ export default defineComponent({
           const graphs = component[graph_type]
           if (!graphs) continue
 
-          for (const [measurement, fields] of Object.entries(graphs)) {
-            for (const field of fields) {
+          for (const [measurement, graph_param] of Object.entries(graphs)) {
+            for (const field of graph_param.fields) {
               const tmp = {
                 measurement: measurement,
+                where: graph_param.where,
                 graph_type: graph_type,
                 agent_id: this.agent_id,
                 agg: graph_type,
                 interval: interval,
-                field: field
+                field: field,
               }
 
               params[graph_type].push(tmp)
@@ -192,6 +192,7 @@ export default defineComponent({
               measurement: element.measurement,
               group_by: element.group_by,
               agent_id: this.agent_id,
+              where: element.where,
               graph_type: "time",
               interval: interval,
               agg: agg,

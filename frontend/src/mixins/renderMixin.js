@@ -23,6 +23,22 @@ const renderMixin = {
       return size
     },
 
+    renderUPtime(uptime_seconds) {
+      const uptime_moment = moment.duration({ seconds: uptime_seconds })
+
+      let uptime = ""
+      if (uptime_moment.days()) {
+        uptime = `${uptime_moment.days()} days `
+      }
+
+      if (uptime_moment.hours()) {
+        uptime = `${uptime}${uptime_moment.hours()}h `
+      }
+
+      uptime = `${uptime}${uptime_moment.minutes()}m ${uptime_moment.seconds()}s`
+      return uptime
+    },
+
     renderIcon(icon, size) {
       const s = size === "large" ? "fa-4x" : "mr-1"
       return `${icon} ${s}`

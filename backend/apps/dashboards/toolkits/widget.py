@@ -14,17 +14,8 @@ class WidgetData:
         if params.date_start:
             where_sql.extend([f"(time > '{params.date_start}' AND time < '{params.date_end}')"])
 
-        # for where in query.where:
-        #     if where.operator == "eq":
-        #         where_sql.append(f"{where.field} = '{where.pattern}'")
-        #     elif where.operator == "lt":
-        #         where_sql.append(f"{where.field} < {where.pattern}")
-        #     elif where.operator == "lte":
-        #         where_sql.append(f"{where.field} <= {where.pattern}")
-        #     elif where.operator == "gt":
-        #         where_sql.append(f"{where.field} > {where.pattern}")
-        #     elif where.operator == "gte":
-        #         where_sql.append(f"{where.field} >= {where.pattern}")
+        if params.where:
+            where_sql.append(params.where)
 
         return " AND ".join(where_sql)
 

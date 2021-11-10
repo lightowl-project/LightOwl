@@ -99,10 +99,18 @@ export default defineComponent({
     used_data: 0,
 
     last: {
-      elasticsearch_indices: ["docs_count"],
-      elasticsearch_clusterstats_indices: ["store_size_in_bytes"],
-      elasticsearch_fs: ["data_0_total_in_bytes", "data_0_free_in_bytes"],
-      elasticsearch_cluster_health: ["status", "unassigned_shards", "active_shards"]
+      elasticsearch_indices: {
+        fields: ["docs_count"],
+      },
+      elasticsearch_clusterstats_indices: {
+        fields: ["store_size_in_bytes"],
+      },
+      elasticsearch_fs: {
+        fields: ["data_0_total_in_bytes", "data_0_free_in_bytes"],
+      },
+      elasticsearch_cluster_health: {
+        fields: ["status", "unassigned_shards", "active_shards"]
+      }
     },
 
     max: {},

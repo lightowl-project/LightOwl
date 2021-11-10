@@ -69,7 +69,9 @@ export default defineComponent({
     nb_container: 0,
 
     last: {
-      docker: ["n_containers"]
+      docker: {
+        fields: ["n_containers"]
+      }
     },
 
     max: {},

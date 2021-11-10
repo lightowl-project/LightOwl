@@ -74,7 +74,9 @@ export default defineComponent({
     virtual_memory: 0,
 
     last: {
-      mongodb: ["open_connections", "vsize_megabytes"]
+      mongodb: {
+        fields: ["open_connections", "vsize_megabytes"]
+      }
     },
     max: {},
     time: [{

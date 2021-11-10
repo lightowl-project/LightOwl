@@ -95,13 +95,14 @@
 <script>
 import statsMixin from "@/mixins/statsMixin"
 import dashMixin from "@/mixins/dashMixin"
+import renderMixin from "@/mixins/renderMixin"
 import { defineComponent } from "@vue/composition-api"
 import TimeChart from "@/components/charts/TimeChart.vue"
 import GaugeChart from "@/components/charts/GaugeChart.vue"
 
 export default defineComponent({
   components: { GaugeChart, TimeChart },
-  mixins: [dashMixin, statsMixin],
+  mixins: [dashMixin, statsMixin, renderMixin],
 
   props: {
     agent_id: String,
@@ -119,11 +120,15 @@ export default defineComponent({
     reqpersec: 0,
 
     last: {
-      apache: ["Uptime", "CPULoad", "Processes"]
+      apache: {
+        fields: ["Uptime", "CPULoad", "Processes"]
+      }
     },
 
     max: {
-      apache: ["ReqPerSec"]
+      apache: {
+        fields: ["ReqPerSec"]
+      }
     },
 
     time: [{
@@ -148,7 +153,7 @@ export default defineComponent({
     updateData(graph_type, data) {
       if (graph_type === "last") {
         this.is_loading_stats = false
-        this.uptime = data["apache.Uptime"]
+        this.uptime = this.renderUPtime(data["apache.Uptime"])
         this.load1 = parseFloat(data["apache.CPULoad"])
         this.processes = data["apache.Processes"]
       } else if (graph_type === "max") {

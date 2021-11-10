@@ -149,15 +149,17 @@
 </template>
 
 <script>
+import request from "@/utils/request"
 import statsMixin from "@/mixins/statsMixin"
 import dashMixin from "@/mixins/dashMixin"
+import renderMixin from "@/mixins/renderMixin"
 import { defineComponent } from "@vue/composition-api"
 import TimeChart from "@/components/charts/TimeChart.vue"
 import GaugeChart from "@/components/charts/GaugeChart.vue"
 
 export default defineComponent({
   components: { GaugeChart, TimeChart },
-  mixins: [dashMixin, statsMixin],
+  mixins: [dashMixin, statsMixin, renderMixin],
 
   props: {
     agent_id: {
@@ -181,15 +183,28 @@ export default defineComponent({
     current_users: 0,
 
     last: {
-      cpu: ["usage_idle"],
-      mem: ["used_percent", "available"],
-      system: ["uptime_format", "n_users", "load1", "n_cpus"],
-      processes: ["total_threads", "zombies", "total"],
-      swap: ["used"]
+      cpu: {
+        fields: ["usage_idle"],
+      },
+      mem: {
+        fields: ["used_percent", "available"],
+      },
+      system: {
+        fields: ["uptime", "n_users", "load1", "n_cpus"],
+      },
+      processes: {
+        fields: ["total_threads", "zombies", "total"],
+      },
+      swap: {
+        fields: ["used"]
+      }
     },
 
     max: {
-      disk: ["used_percent"]
+      disk: {
+        fields: ["used_percent"],
+        where: ""
+      }
     },
 
     time: [{
@@ -240,6 +255,16 @@ export default defineComponent({
     }
   }),
 
+  async beforeMount() {
+    const response = await request.get(`/api/v1/agents/${this.agent_id}`)
+    const agent = response.data
+    switch (agent.os) {
+      case "Linux":
+        this.max.disk.where = "path = '/'"
+        break;
+    }
+  },
+
   methods: {
     resize() {
       this.$refs.graphCPU.resize()
@@ -268,7 +293,10 @@ export default defineComponent({
     updateData(graph_type, data) {
       if (graph_type === "last") {
         this.is_loading_stats = false
-        this.uptime = data["system.uptime_format"]
+
+        
+        this.uptime = this.renderUPtime(data["system.uptime"])
+        
         this.$refs.graphCPU.updateData(parseInt(100 - data["cpu.usage_idle"]))
         this.$refs.graphMEM.updateData(parseFloat(data["mem.used_percent"]))
         this.load1 = parseFloat(data["system.load1"])

@@ -105,6 +105,7 @@ class ExecuteQuerySchema(BaseModel):
     field: str
     group_by: str = ""
     agg: str = "mean"
+    where: str = ""
     date_start: datetime = None
     date_end: datetime = None
     interval: str = None
