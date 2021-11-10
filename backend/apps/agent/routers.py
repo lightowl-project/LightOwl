@@ -77,11 +77,11 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
 
     with open("/app/toolkits/agent/.env.j2", 'r') as f:
         template = f.read()
-        env = jinja2.Template(template, autoescape=True).render(data_env)
+        env = jinja2.Template(template).render(data_env)
 
     with open("/app/toolkits/agent/telegraf.conf.j2", 'r') as f:
         template = f.read()
-        telegraf = jinja2.Template(template, autoescape=True).render(data_env)
+        telegraf = jinja2.Template(template).render(data_env)
 
     dir_name: str = "/tmp/lightowl"
     if os.path.exists(dir_name):

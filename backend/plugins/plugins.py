@@ -27,7 +27,7 @@ class Plugin:
         with open(self.CONFIG_FILE, 'r') as f:
             config = f.read()
 
-        j2_template = jinja2.Template(config, autoescape=True)
+        j2_template = jinja2.Template(config)
 
         plugin_config: dict = deepcopy(dict(self.plugin_obj.config))
         return j2_template.render(plugin_config)
