@@ -25,7 +25,7 @@ class RuleSchema(BaseModel):
     priority: int = 3
     created_at: datetime
     updated_at: datetime
-    agent: PyObjectId = Field(default_factory=PyObjectId, alias="agent_id")
+    agents: List[PyObjectId]
     measurement: str
     field: str
     operator: OperatorChoices
@@ -50,7 +50,7 @@ class RuleSchema(BaseModel):
 
 class RuleAgentSchema(RuleSchema):
     from apps.agent.schema import AgentSchema
-    agent: AgentSchema
+    agents: List[AgentSchema]
 
 
 class RuleCreateSchema(BaseModel):

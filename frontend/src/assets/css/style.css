@@ -138,6 +138,7 @@
 
 .el-tag {
     margin-right: 10px;
+    color: #fff !important;
 }
 
 .el-tag + .el-tag {

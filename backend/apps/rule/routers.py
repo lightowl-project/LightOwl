@@ -39,7 +39,7 @@ async def get_rules(agent_id: str = None, pagination: TableParam = Depends(), ap
         query["name"] = {"$regex": f".*{pagination.search}.*", "$options": "i"}
         
     if agent_id:
-        query["agent"] = ObjectId(agent_id)
+        query["agents"] = {"$in": [ObjectId(agent_id)]}
 
     lookup: dict = {
         "from": "agent",
@@ -71,7 +71,7 @@ async def get_rules(agent_id: str = None, pagination: TableParam = Depends(), ap
 
     data: list = []    
     for tmp in data_tmp:
-        tmp["agent"] = tmp["agent"][0]
+        tmp["agents"] = list(Agent.objects(pk__in=tmp["agents"]))
         data.append(jsonable_encoder(RuleAgentSchema(**tmp)))
 
     return {
@@ -96,10 +96,9 @@ async def get_rule(rule_id: str, app = Depends(BothAuthParams)):
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_rule(form: RuleCreateSchema, app = Depends(BothAuthParams)):
     try:
-        for agent in form.agents:
-            rule = Rule(**form.dict())
-            rule.agent = Agent.objects(pk=agent).get()
-            rule.save()
+        rule = Rule(**form.dict())
+        rule.agents = list(Agent.objects(pk__in=form.agents))
+        rule.save()
     except Exception as err:
         raise
 

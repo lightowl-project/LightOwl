@@ -35,7 +35,7 @@ class Rule(mongoengine.DynamicDocument):
     updated_at = mongoengine.DateTimeField(default=datetime.now)
     description = mongoengine.StringField(default="")
     remediation = mongoengine.StringField(default="")
-    agent = mongoengine.ReferenceField(Agent, reverse_delete_rule=mongoengine.CASCADE)
+    agents = mongoengine.ListField(mongoengine.ReferenceField(Agent, reverse_delete_rule=mongoengine.CASCADE))
     measurement = mongoengine.StringField()
     field = mongoengine.StringField()
     operator = mongoengine.StringField(choices=OPERATOR_CHOICES)

@@ -1,7 +1,12 @@
 from ..schema import ExecuteQuerySchema
 from toolkits.influx import Influx
 from typing import Union, List
-from datetime import datetime
+from config import settings
+import logging.config
+import logging
+
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("api")
 
 
 class WidgetData:
@@ -49,7 +54,7 @@ class WidgetData:
         if not params.date_start:
             query_sql = f"{query_sql} LIMIT 1"
 
-        print(query_sql)
+        logger.info(query_sql)
         tmp_results = self.influx.execute_simple_query(query_sql)
         return tmp_results.raw
 

@@ -2,6 +2,11 @@ from influxdb import InfluxDBClient, exceptions
 from apps.metrics.schema import ChartSchema, LogsSchema
 from toolkits.paginate import TableParam
 from config import settings
+import logging.config
+import logging
+
+logging.config.dictConfig(settings.LOGGING)
+logger = logging.getLogger("api")
 
 
 class Influx:
@@ -122,7 +127,7 @@ class Influx:
 
         query_sql = f"{query_sql} ORDER BY {order} LIMIT {limit} OFFSET {offset}"
 
-        print(query_sql)
+        logger.debug(query_sql)
 
         tmp_results = self.execute_simple_query(query_sql)
         result = list(tmp_results.get_points())
@@ -154,7 +159,7 @@ class Influx:
 
         query_sql: str = f"{query_sql} GROUP BY {', '.join(group_by)}"
 
-        print(query_sql)
+        logger.debug(query_sql)
         tmp_results = self.execute_simple_query(query_sql)
         return tmp_results.raw
         

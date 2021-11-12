@@ -73,8 +73,7 @@ class RealTime:
                 tmp_tags = result["tags"]
                 date = result["time"]
             except KeyError as err:
-                print(result)
-                print("err", err)
+                logger.error(err, exc_info=1)
                 continue
 
             tags: dict = {}

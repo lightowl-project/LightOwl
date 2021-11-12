@@ -257,7 +257,7 @@ export default defineComponent({
     if (this.rule_id) {
       request.get(`/api/v1/rules/${this.rule_id}`).then((response) => {
         this.rule = response.data
-        this.rule.agents = [response.data.agent_id]
+        // this.rule.agents = response.data.agents
         this.fetch_measurements()
         this.fetchFields(this.rule.field)
       })
@@ -279,17 +279,31 @@ export default defineComponent({
 
     async fetch_measurements() {
       this.measurements_choices = []
-      let tmp_measurements = []
-      for (const agent_id of this.rule.agents) {
+      let tmp_measurements = {}
+      for (const i in this.rule.agents) {
+        const agent_id = this.rule.agents[i];
         const response = await request.get(`/api/v1/inputs/measurements/${agent_id}`)
-        tmp_measurements = tmp_measurements.concat(response.data)
+
+        for (const measurement of response.data) {
+          if (tmp_measurements[measurement]) {
+            tmp_measurements[measurement] += 1
+          } else {
+            tmp_measurements[measurement] = 1
+          }
+        }
       }
 
-      tmp_measurements = tmp_measurements.filter((value, index, array) => {
-        return array.indexOf(value) === index
-      })
+      let tmp = Object.keys(tmp_measurements)
+      if (this.rule.agents.length > 1) {
+        tmp = []
+        for (const [measurement, number] of Object.entries(tmp_measurements)) {
+          if (number === this.rule.agents.length) {
+            tmp.push(measurement)
+          }
+        }
+      }
 
-      this.measurements_choices = tmp_measurements
+      this.measurements_choices = tmp
     },
 
     checkEmails() {

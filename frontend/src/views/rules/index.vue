@@ -40,7 +40,7 @@
               <span v-if="row.field">
                 <chart
                   :ref="renderChartRef($index)"
-                  :agent_ids="[row.agent._id]"
+                  :agent_ids="getRuleAgents(row)"
                   :collector="row"
                   agg="last"
                 />
@@ -89,10 +89,12 @@
             align="left"
             :sortable="true"
             prop="agent"
-            :label="$t('Agent')"
+            :label="$t('Agents')"
           >
             <div slot-scope="{ row }" class="d-flex">
-              {{ row.agent.ip_address }} - {{ row.agent.hostname }}
+              <el-tag v-for="agent in row.agents" :key="agent._id" effect="dark">
+                {{ agent.ip_address }}
+              </el-tag>
             </div>
           </el-table-column>
           <el-table-column
@@ -258,6 +260,15 @@ export default {
 
     renderChartRef(index) {
       return `charts-${index}`
+    },
+
+    getRuleAgents(rule) {
+      const tmp = []
+      for (const agent of rule.agents) {
+        tmp.push(agent._id)
+      }
+
+      return tmp
     },
 
     updateRule(rule) {
