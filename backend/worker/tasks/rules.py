@@ -108,7 +108,7 @@ def check_duration(rule: Rule, agent: Agent, metric: Any, pattern: Any):
     try:
         # Check if an alert already exists:
         Alert.objects(rule=rule, priority=rule.priority).get()
-        throw_alert(rule, metric, pattern)
+        throw_alert(rule, agent, metric, pattern)
         return
     except Alert.DoesNotExist:
         pass
@@ -140,7 +140,7 @@ def check_duration(rule: Rule, agent: Agent, metric: Any, pattern: Any):
 
     logger.info(f"Rule [{str(rule.pk)}][{rule.name}] raise since {date_first_raise.isoformat()}")
     if date_first_raise <= date_minus_duration:
-        throw_alert(rule, metric, pattern)
+        throw_alert(rule, agent, metric, pattern)
 
 
 @celery.task(bind=True, name="executeRule")

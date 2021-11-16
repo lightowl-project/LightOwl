@@ -28,7 +28,7 @@ def parseMessage(self, data: str):
             return
 
         # Execute Rules
-        logger.info(f"{agent.ip_address}, {element['measurement']}")
+        logger.debug(f"{agent.ip_address}, {element['measurement']}")
         rules = Rule.objects(enabled=True, agents__in=[agent], measurement=element["measurement"])
         for rule in rules:
             if rule.field not in tags.keys():
