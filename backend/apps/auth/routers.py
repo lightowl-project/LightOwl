@@ -26,7 +26,7 @@ router: APIRouter = APIRouter()
 async def create_user(form: LightOwlInstallSchema):
     nb_users = User.objects.count()
     if nb_users > 0:
-        raise HTTPException(status_code=401, detail="This Node is already configured")
+        raise HTTPException(status_code=401, detail="LightOwl is already configured")
 
     if form.password != form.confirm_password:
         raise HTTPException(status_code=400, detail="Passwords mismatch")
@@ -42,10 +42,9 @@ async def create_user(form: LightOwlInstallSchema):
         hashed_password=hashed_password
     )
 
-    agent_token: str = secrets.token_urlsafe(12)
     Config.objects.create(
         ip_address=form.ip_address,
-        agent_token=agent_token
+        agent_token=form.lightowl_token
     )
 
 

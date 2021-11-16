@@ -4,12 +4,13 @@ import json
 import sys
 
 
-def configure_lightowl(admin_password: str, ip_address: str):
+def configure_lightowl(admin_password: str, ip_address: str, lightowl_token: str):
     form: dict = {
         "username": "admin",
         "password": admin_password,
         "confirm_password": admin_password,
-        "ip_address": ip_address
+        "ip_address": ip_address,
+        "lightowl_token": lightowl_token
     } 
 
     response = requests.post(
@@ -30,22 +31,10 @@ def configure_influxdb():
     client.create_retention_policy("lightowl_retention_policy", "1w", "1", database="lightowl", default=True)
 
 
-def main():
-    print("""
-██      ██  ██████  ██   ██ ████████  ██████  ██     ██ ██      
-██      ██ ██       ██   ██    ██    ██    ██ ██     ██ ██      
-██      ██ ██   ███ ███████    ██    ██    ██ ██  █  ██ ██      
-██      ██ ██    ██ ██   ██    ██    ██    ██ ██ ███ ██ ██      
-███████ ██  ██████  ██   ██    ██     ██████   ███ ███  ███████                     
-    """)
-
-    print("Welcome to the LightOwl installer")
-
-
 if __name__ == "__main__":
-    main()
     admin_password: str = sys.argv[1]
     ip_address: str = sys.argv[2]
+    lightowl_token: str = sys.argv[3]
 
-    configure_lightowl(admin_password, ip_address)
+    configure_lightowl(admin_password, ip_address, lightowl_token)
     configure_influxdb()

@@ -58,6 +58,7 @@ class UserCreateSchema(BaseModel):
 
 class LightOwlInstallSchema(UserCreateSchema):
     ip_address: str
+    lightowl_token: str
 
 class UserUpdateSchema(BaseModel):
     disabled: bool

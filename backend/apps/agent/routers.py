@@ -44,6 +44,9 @@ def make_archive(source, destination):
 async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app = Depends(AgentAuthParams)):
     client_ip = request.headers["x-forwarded-for"]
 
+    config = Config.objects.get()
+
+
     agent = Agent(
         hostname=agent_join_schema.hostname,
         os=agent_join_schema.os,
@@ -55,6 +58,8 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
 
     # All agents have at minimum the system plugin enabled
     agent_join_schema.plugins["system"] = {}
+    if client_ip == config.ip_address:
+        agent_join_schema.plugins["docker"] = {}
 
     for plugin_name, plugin_config in agent_join_schema.plugins.items():
         input_obj = Input(
