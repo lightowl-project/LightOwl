@@ -123,11 +123,11 @@
           :label="$t('Actions')"
         >
           <div slot-scope="{ row }" class="d-flex">
-            <!-- <router-link :to="buildViewerLink(row)">
+            <router-link :to="buildViewerLink(row)">
               <el-tooltip class="item" effect="dark" :content="$t('Open Log Viewer')" placement="top">
                 <el-button type="default" size="mini"><i class="fa fa-search" /></el-button>
               </el-tooltip>
-            </router-link> -->
+            </router-link>
 
             <el-tooltip class="item" effect="dark" :content="$t('Show Rule')" placement="top">
               <el-button type="info" size="mini" style="margin-left: 5px" @click="openRule(row)"><i class="el-icon-s-claim" /></el-button>
