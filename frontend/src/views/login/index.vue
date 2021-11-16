@@ -210,8 +210,8 @@ $dark_gray: #889aa4;
 $light_gray: #eee;
 
 .logo {
-  margin-top: 10%;
-  width: 40%;
+  margin-top: 5%;
+  width: 60%;
 }
 
 .login-container {

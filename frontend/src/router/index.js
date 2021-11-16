@@ -99,21 +99,21 @@ export const constantRoutes = [
       hidden: true
     }]
   },
-  {
-    path: "/viewer/",
-    component: Layout,
-    meta: { title: "Viewer", icon: "el-icon-view" },
-    children: [{
-      path: "",
-      name: "Viewer",
-      component: () => import("@/views/viewer/index"),
-      hidden: true
-    }, {
-      path: ":alert_id?",
-      component: () => import("@/views/viewer/index"),
-      hidden: true
-    }]
-  },
+  // {
+  //   path: "/viewer/",
+  //   component: Layout,
+  //   meta: { title: "Viewer", icon: "el-icon-view" },
+  //   children: [{
+  //     path: "",
+  //     name: "Viewer",
+  //     component: () => import("@/views/viewer/index"),
+  //     hidden: true
+  //   }, {
+  //     path: ":alert_id?",
+  //     component: () => import("@/views/viewer/index"),
+  //     hidden: true
+  //   }]
+  // },
   {
     path: "/config",
     component: Layout,

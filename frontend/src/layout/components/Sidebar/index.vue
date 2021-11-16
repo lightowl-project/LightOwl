@@ -18,6 +18,10 @@
           :item="route"
           :base-path="route.path"
         />
+
+        <el-menu-item id="version" :index="1000">
+          {{ version }}
+        </el-menu-item>
       </el-menu>
     </el-scrollbar>
   </div>
@@ -28,9 +32,13 @@ import { mapGetters } from "vuex"
 import Logo from "./Logo"
 import SidebarItem from "./SidebarItem"
 import variables from "@/styles/variables.scss"
+import request from "@/utils/request"
 
 export default {
   components: { SidebarItem, Logo },
+  data: () => ({
+    version: null
+  }),
   computed: {
     ...mapGetters(["sidebar"]),
     routes() {
@@ -55,6 +63,21 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+
+  mounted() {
+    request.get("/api/v1/config/version").then((response) => {
+      this.version = response.data.version
+    })
   }
 }
 </script>
+<style scoped>
+#version {
+  position: fixed;
+  bottom: 0px;
+  height: 40px;
+  padding: 0 !important;
+  margin: 15px !important;
+}
+</style>

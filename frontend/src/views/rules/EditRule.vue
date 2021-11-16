@@ -279,9 +279,9 @@ export default defineComponent({
 
     async fetch_measurements() {
       this.measurements_choices = []
-      let tmp_measurements = {}
+      const tmp_measurements = {}
       for (const i in this.rule.agents) {
-        const agent_id = this.rule.agents[i];
+        const agent_id = this.rule.agents[i]
         const response = await request.get(`/api/v1/inputs/measurements/${agent_id}`)
 
         for (const measurement of response.data) {

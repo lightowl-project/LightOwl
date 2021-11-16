@@ -9,9 +9,11 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <el-link type="info" :href="renderDocHref()" style="margin-right: 20px;">
-        <i class="fa fa-file-alt fa-2x" />
-      </el-link>
+      <el-tooltip class="item" effect="dark" :content="$t('API Documentation')" placement="bottom">
+        <el-link type="info" :href="renderDocHref()" style="margin-right: 20px;">
+          <i class="fa fa-file-alt fa-2x" />
+        </el-link>
+      </el-tooltip>
       <el-dropdown class="avatar-container avatar-link" trigger="click">
         <div class="avatar-wrapper">
           <i class="fa fa-user fa-2x" />
@@ -41,9 +43,11 @@ export default {
     Breadcrumb,
     Hamburger
   },
+
   computed: {
     ...mapGetters(["sidebar", "avatar"])
   },
+
   methods: {
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar")

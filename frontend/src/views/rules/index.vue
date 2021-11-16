@@ -92,7 +92,7 @@
             :label="$t('Agents')"
           >
             <div slot-scope="{ row }" class="d-flex">
-              <el-tag v-for="agent in row.agents" :key="agent._id" effect="dark">
+              <el-tag v-for="agent in row.agents" :key="agent._id" effect="dark" size="small">
                 {{ agent.ip_address }}
               </el-tag>
             </div>

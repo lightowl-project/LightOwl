@@ -12,7 +12,7 @@ class Alert(mongoengine.Document):
     first_raise = mongoengine.DateTimeField(default=datetime.utcnow)
     last_raise = mongoengine.DateTimeField(default=datetime.utcnow)
     nb_raise = mongoengine.IntField(default=1)
-    priority = mongoengine.IntField(default=3, unique_with=("rule",))
+    priority = mongoengine.IntField(default=3, unique_with=("rule", "agent"))
     ack = mongoengine.BooleanField(default=False)
 
 

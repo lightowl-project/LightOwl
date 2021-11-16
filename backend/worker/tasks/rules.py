@@ -1,3 +1,4 @@
+from apps.agent.models import Agent
 from toolkits.exceptions import InvalidOperator, MailSettingsNotConfigured
 from apps.config.models import Config, MailSettings
 from worker.mongo_connect import mongo_connect
@@ -68,11 +69,11 @@ def send_mail(alert: Alert) -> bool:
     mail_toolkit.send(alert.rule.mailTo, subject, body)
 
 
-def throw_alert(rule: Rule, metric: Any, pattern: Any):
+def throw_alert(rule: Rule, agent: Agent, metric: Any, pattern: Any):
     logger.info(f"Raising alert for Rule {str(rule.pk)} Metric: {metric} Pattern: {pattern}")
 
     try:
-        alert = Alert.objects(rule=rule, priority=rule.priority).get()
+        alert = Alert.objects(rule=rule, agent=agent, priority=rule.priority).get()
         alert.nb_raise += 1
         alert.last_raise = datetime.utcnow()
         alert.save()
@@ -80,7 +81,7 @@ def throw_alert(rule: Rule, metric: Any, pattern: Any):
         alert = Alert.objects.create(
             rule=rule,
             priority=rule.priority,
-            agent=rule.agent
+            agent=agent
         )
 
         message: dict = {
@@ -103,7 +104,7 @@ def throw_alert(rule: Rule, metric: Any, pattern: Any):
     )
 
 
-def check_duration(rule: Rule, metric: Any, pattern: Any):
+def check_duration(rule: Rule, agent: Agent, metric: Any, pattern: Any):
     try:
         # Check if an alert already exists:
         Alert.objects(rule=rule, priority=rule.priority).get()
@@ -113,11 +114,12 @@ def check_duration(rule: Rule, metric: Any, pattern: Any):
         pass
 
     redis_conn: Redis = get_redis_client()
+    redis_key: str = f"{str(rule.pk)}_{str(agent.pk)}"    
+    data = redis_conn.hgetall(redis_key)
 
-    data = redis_conn.hgetall(str(rule.pk))
     if not data:
         date = datetime.timestamp(datetime.utcnow())
-        redis_conn.hmset(str(rule.pk), {"date": date})
+        redis_conn.hmset(redis_key, {"date": date})
         return
     
     date_first_raise = datetime.fromtimestamp(float(data["date"]))
@@ -143,10 +145,12 @@ def check_duration(rule: Rule, metric: Any, pattern: Any):
 
 @celery.task(bind=True, name="executeRule")
 @mongo_connect
-def executeRule(self, rule_id: str, tags: str):
+def executeRule(self, rule_id: str, agent_id: str, tags: str):
     self.update_state(state=celery.states.STARTED)
 
     try:
+        agent = Agent.objects(pk=agent_id).get()
+
         tags: dict = json.loads(tags)
         rule = Rule.objects(pk=rule_id).get()
         metric = tags[rule.field]
@@ -163,16 +167,18 @@ def executeRule(self, rule_id: str, tags: str):
 
         if not execute_operator(metric, operator, pattern):
             redis_conn: Redis = get_redis_client()
-            redis_conn.delete(str(rule.pk))
+
+            redis_key: str = f"{str(rule.pk)}_{str(agent.pk)}"
+            redis_conn.delete(redis_key)
 
             self.update_state(state=celery.states.SUCCESS)
             return
 
         if rule.duration == "oneshot":
             # Throw alert
-            throw_alert(rule, metric, pattern)
+            throw_alert(rule, agent, metric, pattern)
         else:
-            check_duration(rule, metric, pattern)
+            check_duration(rule, agent, metric, pattern)
 
     except Exception as error:
         logger.critical(error, exc_info=1)

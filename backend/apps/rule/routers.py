@@ -148,8 +148,13 @@ async def delete_rule(rule_id: str, app = Depends(BothAuthParams)):
     try:
         rule = Rule.objects(pk=rule_id).get()
         redis_conn = get_redis_client()
-        redis_conn.delete(str(rule.pk))
+
+        for agent in rule.agents:
+            redis_key: str = f"{str(rule.pk)}_{str(agent.pk)}"
+            redis_conn.delete(redis_key)
+
         rule.delete()
+
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     
     except Rule.DoesNotExist:

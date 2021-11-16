@@ -1,39 +1,25 @@
-from toolkits.twilio.twilio import TwilioToolkit
-from .schema import ConfigSchema, GeneralConfigSchema, MailSchema, MailTestSchema, RetentionSchema, TwilioSchema
+from .schema import ConfigSchema,MailSchema, MailTestSchema, RetentionSchema, TwilioSchema
+from .models import Config, MailSettings, TwilioSettings
 from fastapi import APIRouter, status, HTTPException
+from toolkits.twilio.twilio import TwilioToolkit
 from toolkits.mail.mail import MailToolkit
 from fastapi.param_functions import Depends
 from apps.common import BothAuthParams
-from .models import Config, MailSettings, TwilioSettings
 from starlette.responses import Response
 from toolkits.influx import Influx
+from config import settings
 
 router: APIRouter = APIRouter()
 
 
-# @router.get("/", response_model=GeneralConfigSchema)
-# async def get_config(app = Depends(BothAuthParams)):
-#     try:
-#         mail = MailSettings.objects.get()
-#     except MailSettings.DoesNotExist:
-#         mail = MailSettings()
-
-#     try:
-#         twilio = TwilioSettings.objects.get()
-#     except TwilioSettings.DoesNotExist:
-#         twilio = TwilioSettings()
-
-#     config: Config = Config.objects.get()
-
-#     return {
-#         "twilio": TwilioSchema(**twilio.to_mongo()),
-#         "mail": MailSchema(**mail.to_mongo()),
-#         "config": ConfigSchema(**config.to_mongo()),
-#     }
-
 @router.get("/", response_model=ConfigSchema)
 async def get_config(app = Depends(BothAuthParams)):
     return Config.objects.get()
+
+
+@router.get("/version")
+async def get_version(app = Depends(BothAuthParams)):
+    return {"version": settings.VERSION}
 
 
 @router.get("/mail", response_model=MailSchema)
@@ -112,7 +98,6 @@ async def update_retention(form: RetentionSchema, app = Depends(BothAuthParams))
         config.retention_duration = form.retention_duration
         config.save()
     except Exception as err:
-        raise
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(err))
 
 
