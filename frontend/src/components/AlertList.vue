@@ -151,40 +151,7 @@
         </el-table-column>
       </template>
     </light-owl-table>
-    <el-dialog :visible.sync="modalEditRule" width="70%" :show-close="false" custom-class="dialog-form" :destroy-on-close="true" @close="rule_edit_id = null;">
-      <div slot="title">
-        <span v-if="rule_edit_id">{{ $t("Edit Rule") }}</span>
-        <span v-else>{{ $t("Create Rule") }}</span>
 
-        <el-button
-          type="primary"
-          style="float: right"
-          size="mini"
-          @click="$refs.editRule.saveRule()"
-        >
-          <i class="fa fa-save" />
-        </el-button>
-        <el-button
-          plain
-          style="float: right; margin-right: 10px"
-          size="mini"
-          @click="modalEditRule = false"
-        >
-          <i class="fa fa-times" />
-        </el-button>
-      </div>
-      <edit-rule
-        v-if="modalEditRule"
-        ref="editRule"
-        :measurements="measurements_choices"
-        :agent_id="agent_id"
-        :rule_id="rule_edit_id"
-        @save="
-          rule_edit_id = null;
-          modalEditRule = false;
-        "
-      />
-    </el-dialog>
   </div>
 </template>
 
@@ -192,7 +159,6 @@
 import request from "@/utils/request"
 import EventBus from "@/event-bus"
 import renderMixin from "@/mixins/renderMixin"
-import EditRule from "@/views/rules/EditRule.vue"
 import ChartAlert from "@/components/ChartAlert.vue"
 import { defineComponent } from "@vue/composition-api"
 import LightOwlTable from "@/components/Table/index.vue"
@@ -213,7 +179,6 @@ export default defineComponent({
   },
 
   data: () => ({
-    modalEditRule: false,
     measurements_choices: [],
     rule_edit_id: null,
     sortOrder: {
@@ -233,11 +198,6 @@ export default defineComponent({
       }
 
       this.$refs.table.toggleRowExpansion(row)
-    },
-
-    openRule(alert) {
-      this.rule_edit_id = alert.rule._id
-      this.modalEditRule = true
     },
 
     fetch_measurements() {
