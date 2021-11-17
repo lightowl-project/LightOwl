@@ -81,7 +81,7 @@
         title=""
         height="300"
         :queries="queries"
-        :dateRange="dateRange"
+        :date-range="dateRange"
         :options="chartOptions"
         @zoom="beforeZoom"
       />
@@ -346,8 +346,8 @@ export default defineComponent({
         sort: `${this.sort.prop}|${this.sort.order}`,
         page: this.pagination.page,
         per_page: this.pagination.perPage,
-        interval: interval,
         agent: this.selectedAgent,
+        interval: interval
       }
 
       request
@@ -355,7 +355,7 @@ export default defineComponent({
         .then((response) => {
           const data = []
           for (const serie of response.data.series) {
-            let values = this.formatValues(serie.values)
+            const values = this.formatValues(serie.values)
             data.push({ name: serie.tags.host, data: values })
           }
 

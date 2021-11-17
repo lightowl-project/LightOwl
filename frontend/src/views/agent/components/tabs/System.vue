@@ -184,16 +184,16 @@ export default defineComponent({
 
     last: {
       cpu: {
-        fields: ["usage_idle"],
+        fields: ["usage_idle"]
       },
       mem: {
-        fields: ["used_percent", "available"],
+        fields: ["used_percent", "available"]
       },
       system: {
-        fields: ["uptime", "n_users", "load1", "n_cpus"],
+        fields: ["uptime", "n_users", "load1", "n_cpus"]
       },
       processes: {
-        fields: ["total_threads", "zombies", "total"],
+        fields: ["total_threads", "zombies", "total"]
       },
       swap: {
         fields: ["used"]
@@ -261,7 +261,7 @@ export default defineComponent({
     switch (agent.os) {
       case "Linux":
         this.max.disk.where = "path = '/'"
-        break;
+        break
     }
   },
 
@@ -294,9 +294,8 @@ export default defineComponent({
       if (graph_type === "last") {
         this.is_loading_stats = false
 
-        
         this.uptime = this.renderUPtime(data["system.uptime"])
-        
+
         this.$refs.graphCPU.updateData(parseInt(100 - data["cpu.usage_idle"]))
         this.$refs.graphMEM.updateData(parseFloat(data["mem.used_percent"]))
         this.load1 = parseFloat(data["system.load1"])

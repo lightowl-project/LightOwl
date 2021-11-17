@@ -164,7 +164,7 @@ import { defineComponent } from "@vue/composition-api"
 import LightOwlTable from "@/components/Table/index.vue"
 
 export default defineComponent({
-  components: { LightOwlTable, ChartAlert, EditRule },
+  components: { LightOwlTable, ChartAlert },
   mixins: [renderMixin],
 
   props: {

@@ -100,13 +100,13 @@ export default defineComponent({
 
     last: {
       elasticsearch_indices: {
-        fields: ["docs_count"],
+        fields: ["docs_count"]
       },
       elasticsearch_clusterstats_indices: {
-        fields: ["store_size_in_bytes"],
+        fields: ["store_size_in_bytes"]
       },
       elasticsearch_fs: {
-        fields: ["data_0_total_in_bytes", "data_0_free_in_bytes"],
+        fields: ["data_0_total_in_bytes", "data_0_free_in_bytes"]
       },
       elasticsearch_cluster_health: {
         fields: ["status", "unassigned_shards", "active_shards"]

@@ -169,7 +169,7 @@ export default defineComponent({
                 agent_id: this.agent_id,
                 agg: graph_type,
                 interval: interval,
-                field: field,
+                field: field
               }
 
               params[graph_type].push(tmp)

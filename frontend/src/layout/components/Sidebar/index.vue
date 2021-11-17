@@ -19,7 +19,7 @@
           :base-path="route.path"
         />
 
-        <el-menu-item id="version" :index="1000">
+        <el-menu-item id="version">
           {{ version }}
         </el-menu-item>
       </el-menu>
