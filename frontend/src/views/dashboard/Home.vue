@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <el-card :body-style="{margin: 0, padding: 0}">
-      <el-table ref="table" stripe :loading="is_loading" :data="agents" style="width: 100%" highlight-current-row :default-sort="defaultSort" row-key="_id" @row-click="showDetail">
+      <el-table ref="table" :row-class-name="tableRowClassName" stripe :loading="is_loading" :data="agents" style="width: 100%" highlight-current-row :default-sort="defaultSort" row-key="_id" @row-click="showDetail">
         <el-table-column type="expand">
           <template slot-scope="{ row }">
             <agent :prop-agent="row._id" />
@@ -10,6 +10,7 @@
 
         <el-table-column :label="$t('Agent')" prop="ip_address" sortable>
           <div slot-scope="{ row }">
+            <i v-if="is_down(row.last_seen)" class="fa fa-exclamation-triangle" />
             {{ row.ip_address }} - {{ row.hostname }}
 
             <span style="float: right">
@@ -126,6 +127,24 @@ export default defineComponent({
   },
 
   methods: {
+    is_down(last_seen) {
+      const date = moment.utc(last_seen)
+      return moment.utc().diff(date, "minutes") > 5
+    },
+
+    tableRowClassName({ row }) {
+      const date = moment.utc(row.last_seen)
+      const diff = moment.utc().diff(date, "minutes")
+
+      if (diff > 10) {
+        return "danger-row"
+      } else if (diff > 2) {
+        return "warning-row"
+      }
+
+      return ""
+    },
+
     renderLastSeen(date) {
       const last_seen = moment.utc(date)
       let diff = moment.utc().diff(last_seen, "minutes")
@@ -224,3 +243,14 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+.el-table .danger-row {
+  background-color: #F56C6C;
+  color: #fff;
+}
+.el-table .warning-row {
+  background-color: #f18705;
+  color: #fff;
+}
+</style>
