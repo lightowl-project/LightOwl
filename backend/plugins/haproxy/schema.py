@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 import base64
 
 
@@ -17,13 +17,11 @@ class Haproxy(BaseModel):
         description=""
     )
 
-    username: str = Field(
-        "",
+    username: Optional[str] = Field(
         title="Username",
     )
 
-    password: str = Field(
-        "",
+    password: Optional[str] = Field(
         title="Password",
         description=""
     )

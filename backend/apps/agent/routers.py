@@ -70,6 +70,7 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
         }
         agent_join_schema.plugins["haproxy"] = {
             "servers": ["https://127.0.0.1:1936/haproxy?stats"],
+            "auth": True,
             "username": "lightowl",
             "password": "lightowl",
             "insecure_skip_verify": True
