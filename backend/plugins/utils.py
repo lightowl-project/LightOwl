@@ -1,12 +1,14 @@
 def get_mapping() -> dict:
+    from .http_response import HTTPResponse
     from .elasticsearch import Elasticsearch
     from .postgresql import Postgresql
-    from .http_response import HTTPResponse
+    from .rabbitmq import RabbitMQ
     from .mongodb import MongoDB
-    from .proxmox import Proxmox
-    from .apache import Apache
+    from .influxdb import InfluxDB
+    # from .proxmox import Proxmox
     from .fail2ban import Fail2ban
     from .haproxy import Haproxy
+    from .apache import Apache
     from .system import System
     from .docker import Docker
     from .redis import Redis
@@ -18,11 +20,13 @@ def get_mapping() -> dict:
         "redis": Redis,
         "system": System,
         "docker": Docker,
-        "haproxy": Haproxy,
-        "mongodb": MongoDB,
-        "proxmox": Proxmox,
         "apache": Apache,
+        "haproxy": Haproxy,
         "fail2ban": Fail2ban,
+        "influxdb": InfluxDB,
+        # "proxmox": Proxmox,
+        "rabbitmq": RabbitMQ,
+        "mongodb": MongoDB,
         "postgresql": Postgresql,
         "httpresponse": HTTPResponse,
         "elasticsearch": Elasticsearch

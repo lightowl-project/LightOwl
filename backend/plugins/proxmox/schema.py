@@ -14,12 +14,12 @@ class Proxmox(BaseModel):
 
     base_url: str = Field(
         title="Base URL",
-        description="API connection configuration. The API token was introduced in Proxmox v6.2. Required permissions for user and token : PVEAuditor role on /."
+        description="API connection configuration. The API token was introduced in Proxmox v6.2. Required permissions for user and token : PVEAuditor role on /. Ex: https://127.0.0.1:8006/api2/json/"
     )
 
     api_token: str = Field(
         title="API Token",
-        description="API connection configuration. The API token was introduced in Proxmox v6.2. Required permissions for user and token : PVEAuditor role on /."
+        description="API connection configuration. The API token was introduced in Proxmox v6.2. Required permissions for user and token : PVEAuditor role on /. In format: user@pam!token_name=<secret_token>"
     )
 
     node_name: str = Field(

@@ -45,7 +45,7 @@
             {{ $t('Workers') }}
           </div>
 
-          <time-chart ref="graph_apache_BusyWorkers" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_apache_BusyWorkers" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
       <el-col :md="12">
@@ -54,7 +54,7 @@
             {{ $t('Scoreboard') }}
           </div>
 
-          <time-chart ref="graph_apache_scboard_closing" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_apache_scboard_closing" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
     </el-row>
@@ -65,7 +65,7 @@
             {{ $t('Requests per second') }}
           </div>
 
-          <time-chart ref="graph_apache_ReqPerSec" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_apache_ReqPerSec" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
       <el-col :md="12">
@@ -74,7 +74,7 @@
             {{ $t('CPU System and User') }}
           </div>
 
-          <time-chart ref="graph_apache_CPUSystem" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_apache_CPUSystem" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
     </el-row>
@@ -85,7 +85,7 @@
             {{ $t('Load') }}
           </div>
 
-          <time-chart ref="graph_apache_Load1" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_apache_Load1" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
     </el-row>

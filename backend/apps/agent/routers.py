@@ -42,7 +42,7 @@ def make_archive(source, destination):
 
 @router.post("/join")
 async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app = Depends(AgentAuthParams)):
-    client_ip = request.headers["x-forwarded-for"]
+    client_ip: str = request.headers["x-forwarded-for"]
 
     config = Config.objects.get()
 
@@ -58,8 +58,32 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
 
     # All agents have at minimum the system plugin enabled
     agent_join_schema.plugins["system"] = {}
+
+    # When installing agent on LightOwl server, enable some plugin by default
     if client_ip == config.ip_address:
         agent_join_schema.plugins["docker"] = {}
+        agent_join_schema.plugins["mongodb"] = {
+            "urls": ["127.0.0.1:27017"]
+        }
+        agent_join_schema.plugins["redis"] = {
+            "urls": ["127.0.0.1:6379"]
+        }
+        agent_join_schema.plugins["haproxy"] = {
+            "servers": ["https://127.0.0.1:1936/haproxy?stats"],
+            "username": "lightowl",
+            "password": "lightowl",
+            "insecure_skip_verify": True
+        }
+        agent_join_schema.plugins["rabbitmq"] = {
+            "url": "http://127.0.0.1:15672",
+            "username": "lightowl",
+            "password": settings.RABBITMQ_PASSWORD
+        }
+
+        agent_join_schema.plugins["influxdb"] = {
+            "urls": ["http://127.0.0.1:8086/debug/vars"]
+        }
+
 
     for plugin_name, plugin_config in agent_join_schema.plugins.items():
         input_obj = Input(

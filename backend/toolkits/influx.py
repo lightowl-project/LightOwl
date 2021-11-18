@@ -136,6 +136,7 @@ class Influx:
         key: str = list(mapping.keys())[0]
         query_total_str: str = f"SELECT count({key}) FROM {logs_schema.measurement} WHERE {' AND '.join(where_sql)}"
         tmp_count = self.execute_simple_query(query_total_str)
+
         try:
             return result, list(tmp_count.get_points())[0]["count"]
         except IndexError:

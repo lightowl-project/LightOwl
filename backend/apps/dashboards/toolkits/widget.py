@@ -28,11 +28,11 @@ class WidgetData:
         try:
             measurement_type = self.influx.get_mapping(params.measurement)[params.field]
             if measurement_type not in ("string",):
-                return f"{params.agg}({params.field})"
+                return f'{params.agg}("{params.field}")'
 
             return params.field
         except KeyError:
-            return f"mean({params.field})"
+            return f'mean("{params.field}")'
 
     def __group_by(self, params):
         tmp_group_by: list = []

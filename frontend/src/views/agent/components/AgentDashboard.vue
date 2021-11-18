@@ -47,10 +47,14 @@ export default defineComponent({
     system_plugin_id: null,
     inputs: [],
     dashboards: {
+      "redis": () => import("./tabs/Redis.vue"),
       "apache": () => import("./tabs/Apache.vue"),
       "docker": () => import("./tabs/Docker.vue"),
       "system": () => import("./tabs/System.vue"),
       "fail2ban": () => import("./tabs/Fail2ban.vue"),
+      "haproxy": () => import("./tabs/Haproxy.vue"),
+      "influxdb": () => import("./tabs/InfluxDB.vue"),
+      "rabbitmq": () => import("./tabs/RabbitMQ.vue"),
       "mongodb": () => import("./tabs/MongoDB.vue"),
       "postgresql": () => import("./tabs/PostgreSQL.vue"),
       "elasticsearch": () => import("./tabs/Elasticsearch.vue")
@@ -206,7 +210,10 @@ export default defineComponent({
           for (const [graph_name, values] of Object.entries(response.data)) {
             const keys = graph_name.split(".")
             const measurement = keys[1]
-            const field = keys[2]
+
+            keys.shift()
+            keys.shift()
+            const field = keys.join(".")
 
             if (graph_type === "time") {
               data[`${measurement}.${field}`] = values

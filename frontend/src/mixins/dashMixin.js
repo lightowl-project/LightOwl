@@ -5,6 +5,19 @@ const dashMixin = {
       required: true
     }
   },
+
+  data: () => ({
+    optionsFormatNumbers: {
+      yaxis: {
+        labels: {
+          formatter: (val) => {
+            return new Intl.NumberFormat("fr-FR", { notation: "compact" }).format(val)
+          }
+        }
+      }
+    }
+  }),
+
   methods: {
     load() {
       this.is_loading_stats = true

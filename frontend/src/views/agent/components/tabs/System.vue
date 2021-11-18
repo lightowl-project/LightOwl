@@ -141,7 +141,7 @@
           <div slot="header">
             {{ $t("System load") }}
           </div>
-          <time-chart ref="graph_system_load1" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_system_load1" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
     </el-row>

@@ -5,7 +5,7 @@
         <div slot="header">
           {{ $t("Stats") }}
         </div>
-        <time-chart ref="graph_postgresql_tup_fetched" height="600" :options="{}" :date-range="dateRange" />
+        <time-chart ref="graph_postgresql_tup_fetched" height="600" :options="optionsFormatNumbers" :date-range="dateRange" />
       </el-card>
     </el-col>
   </el-row>

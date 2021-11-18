@@ -27,7 +27,7 @@
           <div slot="header">
             {{ $t("Operations") }}
           </div>
-          <time-chart ref="graph_mongodb_commands_per_sec" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_mongodb_commands_per_sec" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
       <el-col :md="12">
@@ -35,7 +35,7 @@
           <div slot="header">
             {{ $t("Network") }}
           </div>
-          <time-chart ref="graph_mongodb_net_in_bytes" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_mongodb_net_in_bytes" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
       <el-col :md="12">
@@ -43,7 +43,7 @@
           <div slot="header">
             {{ $t("Memory") }}
           </div>
-          <time-chart ref="graph_mongodb_vsize_megabytes" :options="{}" :date-range="dateRange" />
+          <time-chart ref="graph_mongodb_vsize_megabytes" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>
       </el-col>
     </el-row>

@@ -35,13 +35,3 @@ class Plugin:
     def save(self, agent):
         input_obj = Input(plugin_name=self.plugin_obj.plugin_name, config=self.plugin_obj.config.dict(), agent=agent)
         input_obj.save()
-
-        # plugin: Plugin = input_obj.get_plugin()
-        # config: str = plugin.generate_conf()
-
-        # with open(f"/etc/telegraf/telegraf.d/{input_obj.pk}.conf", 'w') as f:
-        #     f.write(config)
-
-        # client = docker.from_env()
-        # telegraf_docker = client.containers.get("supervision_telegraf_1")
-        # telegraf_docker.restart()

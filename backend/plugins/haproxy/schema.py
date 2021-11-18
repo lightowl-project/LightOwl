@@ -6,9 +6,9 @@ import base64
 class Haproxy(BaseModel):
     """Read metrics of Haproxy via socket or HTTP stats page"""
 
-    server: List[str] = Field(
+    servers: List[str] = Field(
        title="Haproxy Servers",
-       description="List of Haproxy Server to gather stats about."
+       description="List of Haproxy Server to gather stats about. Ex: https://127.0.0.1:1936/haproxy?stats"
     )
 
     auth: bool = Field(
