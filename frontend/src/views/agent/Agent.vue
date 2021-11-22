@@ -30,6 +30,7 @@
           :key="tag"
           :disable-transitions="false"
           style="padding: 0"
+          effect="dark"
         >
           <div
             style="display: block;width: 100%;heigth:100%;padding: 0 10px"

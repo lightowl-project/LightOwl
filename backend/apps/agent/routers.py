@@ -46,7 +46,6 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
 
     config = Config.objects.get()
 
-
     agent = Agent(
         hostname=agent_join_schema.hostname,
         os=agent_join_schema.os,
@@ -59,31 +58,34 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
     # All agents have at minimum the system plugin enabled
     agent_join_schema.plugins["system"] = {}
 
-    # When installing agent on LightOwl server, enable some plugin by default
+    # When installing agent on LightOwl server, enable some plugins by default
     if client_ip == config.ip_address:
-        agent_join_schema.plugins["docker"] = {}
-        agent_join_schema.plugins["mongodb"] = {
-            "urls": ["127.0.0.1:27017"]
-        }
-        agent_join_schema.plugins["redis"] = {
-            "urls": ["127.0.0.1:6379"]
-        }
-        agent_join_schema.plugins["haproxy"] = {
-            "servers": ["https://127.0.0.1:1936/haproxy?stats"],
-            "auth": True,
-            "username": "lightowl",
-            "password": "lightowl",
-            "insecure_skip_verify": True
-        }
-        agent_join_schema.plugins["rabbitmq"] = {
-            "url": "http://127.0.0.1:15672",
-            "username": "lightowl",
-            "password": settings.RABBITMQ_PASSWORD
+        default_plugins: dict = {
+            "docker": {},
+            "mongodb": {
+                "urls": ["mongodb://127.0.0.1:27017"]
+            },
+            "redis": {
+                "urls": ["tcp://127.0.0.1:6379"]
+            },
+            "influxdb": {
+                "urls": ["http://127.0.0.1:8086/debug/vars"]
+            },
+            "rabbitmq": {
+                "url": "http://127.0.0.1:15672",
+                "username": "lightowl",
+                "password": settings.RABBITMQ_PASSWORD
+            },
+            "haproxy": {
+                "servers": ["https://127.0.0.1:1936/haproxy?stats"],
+                "auth": True,
+                "username": "lightowl",
+                "password": "lightowl",
+                "insecure_skip_verify": True
+            }
         }
 
-        agent_join_schema.plugins["influxdb"] = {
-            "urls": ["http://127.0.0.1:8086/debug/vars"]
-        }
+        agent_join_schema.plugins.update(default_plugins)
 
 
     for plugin_name, plugin_config in agent_join_schema.plugins.items():
@@ -129,8 +131,6 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
         f.write(lightowl_conf)
     
     shutil.copyfile("/etc/ssl/lightowl/ca.pem", f"{dir_name}/ca.pem")
-    # with tarfile.open("/tmp/lightowl.tar.gz","w:gz") as tar:
-    #     tar.add(dir_name, arcname=os.path.basename(dir_name))
     make_archive(dir_name, "/tmp/lightowl-agent.zip")
     return FileResponse("/tmp/lightowl-agent.zip")
 

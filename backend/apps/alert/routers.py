@@ -162,7 +162,8 @@ async def acknowledge_alert(alert_id: str, app = Depends(BothAuthParams)):
         alert = Alert.objects(pk=alert_id).get()
 
         redis_cli: Redis = Redis(host=settings.REDIS_URL, port=settings.REDIS_PORT, decode_responses=True)
-        redis_cli.delete(str(alert.rule.pk))        
+        redis_key: str = f"{str(alert.rule.pk)}_{str(alert.agent.pk)}"
+        redis_cli.delete(redis_key)
         alert.delete()
 
     except Alert.DoesNotExist:
