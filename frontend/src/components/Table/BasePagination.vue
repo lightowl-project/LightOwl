@@ -11,22 +11,16 @@
     >
       <template v-slot:prev-text>
         <a class="page-link" aria-label="Previous">
-          <span
-            aria-hidden="true"
-          ><i
-            class="fa fa-angle-left"
-            aria-hidden="true"
-          /></span>
+          <span aria-hidden="true">
+            <i class="fa fa-angle-left" aria-hidden="true" />
+          </span>
         </a>
       </template>
       <template v-slot:next-text>
         <a class="page-link" aria-label="Next">
-          <span
-            aria-hidden="true"
-          ><i
-            class="fa fa-angle-right"
-            aria-hidden="true"
-          /></span>
+          <span aria-hidden="true">
+            <i class="fa fa-angle-right" aria-hidden="true"/>
+          </span>
         </a>
       </template>
     </el-pagination>

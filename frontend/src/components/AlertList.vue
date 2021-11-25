@@ -129,10 +129,6 @@
               </el-tooltip>
             </router-link>
 
-            <el-tooltip class="item" effect="dark" :content="$t('Show Rule')" placement="top">
-              <el-button type="info" size="mini" style="margin-left: 5px" @click="openRule(row)"><i class="el-icon-s-claim" /></el-button>
-            </el-tooltip>
-
             <el-popconfirm
               :confirm-button-text="$t('Acknowledge')"
               :cancel-button-text="$t('Cancel')"
