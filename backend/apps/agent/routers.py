@@ -56,52 +56,52 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
             ip_address=client_ip,
         )
 
+        agent.save()
 
-    agent.save()
+        # All agents have at minimum the system plugin enabled
+        agent_join_schema.plugins["system"] = {}
 
-    # All agents have at minimum the system plugin enabled
-    agent_join_schema.plugins["system"] = {}
-
-    # When installing agent on LightOwl server, enable some plugins by default
-    if client_ip == config.ip_address:
-        default_plugins: dict = {
-            "docker": {},
-            "mongodb": {
-                "urls": ["mongodb://127.0.0.1:27017"]
-            },
-            "redis": {
-                "urls": ["tcp://127.0.0.1:6379"]
-            },
-            "influxdb": {
-                "urls": ["http://127.0.0.1:8086/debug/vars"]
-            },
-            "rabbitmq": {
-                "url": "http://127.0.0.1:15672",
-                "username": "lightowl",
-                "password": settings.RABBITMQ_PASSWORD
-            },
-            "haproxy": {
-                "servers": ["https://127.0.0.1:1936/haproxy?stats"],
-                "auth": True,
-                "username": "lightowl",
-                "password": "lightowl",
-                "insecure_skip_verify": True
+        # When installing agent on LightOwl server, enable some plugins by default
+        if client_ip == config.ip_address:
+            default_plugins: dict = {
+                "docker": {},
+                "mongodb": {
+                    "urls": ["mongodb://127.0.0.1:27017"]
+                },
+                "redis": {
+                    "urls": ["tcp://127.0.0.1:6379"]
+                },
+                "influxdb": {
+                    "urls": ["http://127.0.0.1:8086/debug/vars"]
+                },
+                "rabbitmq": {
+                    "url": "http://127.0.0.1:15672",
+                    "username": "lightowl",
+                    "password": settings.RABBITMQ_PASSWORD
+                },
+                "haproxy": {
+                    "servers": ["https://127.0.0.1:1936/haproxy?stats"],
+                    "auth": True,
+                    "username": "lightowl",
+                    "password": "lightowl",
+                    "insecure_skip_verify": True
+                }
             }
-        }
 
-        agent_join_schema.plugins.update(default_plugins)
+            agent_join_schema.plugins.update(default_plugins)
 
 
-    for plugin_name, plugin_config in agent_join_schema.plugins.items():
-        input_obj = Input(
-            plugin_name=plugin_name,
-            config=plugin_config
-        )
+        for plugin_name, plugin_config in agent_join_schema.plugins.items():
+            input_obj = Input(
+                plugin_name=plugin_name,
+                config=plugin_config
+            )
 
-        tmp = input_obj.to_mongo()
-        tmp["agent_id"] = str(agent.pk)
-        plugin = get_plugin(plugin_name)(InputCreateSchema(**tmp))
-        plugin.save(agent)
+            tmp = input_obj.to_mongo()
+            tmp["agent_id"] = str(agent.pk)
+            plugin = get_plugin(plugin_name)(InputCreateSchema(**tmp))
+            plugin.save(agent)
+
 
     config = Config.objects.get()
     data_env: dict = {
