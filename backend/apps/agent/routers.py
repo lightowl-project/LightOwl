@@ -46,12 +46,16 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
 
     config = Config.objects.get()
 
-    agent = Agent(
-        hostname=agent_join_schema.hostname,
-        os=agent_join_schema.os,
-        tags=agent_join_schema.tags,
-        ip_address=client_ip,
-    )
+    try:
+        agent = Agent.objects(hostname=agent_join_schema.hostname, ip_address=client_ip).get()
+    except Agent.DoesNotExist:
+        agent = Agent(
+            hostname=agent_join_schema.hostname,
+            os=agent_join_schema.os,
+            tags=agent_join_schema.tags,
+            ip_address=client_ip,
+        )
+
 
     agent.save()
 
@@ -104,7 +108,8 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
         "rabbit_password": settings.RABBITMQ_PASSWORD,
         "agent_token": config.agent_token,
         "ip_address": config.ip_address,
-        "agent_id": str(agent.pk)
+        "agent_id": str(agent.pk),
+        "os": agent.os
     }
 
     with open("/app/toolkits/agent/.env.j2", 'r') as f:
