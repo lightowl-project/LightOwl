@@ -170,7 +170,7 @@
   timeout = "5s"
 
   ## Optional TLS Config
-  {% if os === "Linux" %}
+  {% if os == "Linux" %}
   tls_ca = "/etc/ssl/lightowl/ca.pem"
   {% endif %}
   # tls_cert = "/etc/telegraf/cert.pem"
