@@ -47,6 +47,7 @@ class Docker(BaseModel):
     )
 
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/docker"
         color: str = "#ef8383"
         with open("./plugins/docker/logo/docker.png", 'rb') as f:
             logo = f.read()

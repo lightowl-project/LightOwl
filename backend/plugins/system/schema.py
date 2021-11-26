@@ -35,6 +35,7 @@ class System(BaseModel):
     )
 
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/system"
         color: str = "#9400ff"
         icon: str = "fa fa-server"
     

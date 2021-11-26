@@ -43,6 +43,7 @@ class MongoDB(BaseModel):
     )
 
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/mongodb"
         color: str = "#70b548"
         with open("./plugins/mongodb/logo/mongodb.png", 'rb') as f:
             logo = f.read()

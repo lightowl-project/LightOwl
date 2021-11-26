@@ -10,8 +10,14 @@
             :closable="false"
             show-icon
           >
-            <span v-html="mapping.description" />
+            <p v-html="mapping.description" />
+
           </el-alert>
+          <p style="font-size: 15px">
+            <a :href="mapping.url" target="_blank">
+              <i class="fa fa-info-circle" />&nbsp;&nbsp;{{ $t("Open Telegraf documentation") }}
+            </a>
+          </p>
         </el-col>
       </el-row>
       <el-row class="mt-2">

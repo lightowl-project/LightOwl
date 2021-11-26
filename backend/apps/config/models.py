@@ -2,6 +2,9 @@ import mongoengine
 
 RETENTION_CHOICES: tuple = (
     ("1d", "1d"),
+    ("2d", "2d"),
+    ("3d", "3d"),
+    ("4d", "4d"),
     ("1w", "1w"),
     ("2w", "2w"),
     ("3w", "3w"),

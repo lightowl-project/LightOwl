@@ -37,6 +37,7 @@ class InfluxDB(BaseModel):
     )
     
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/influxdb"
         color: str = "#70b548"
         with open("./plugins/influxdb/logo/influxdb.png", 'rb') as f:
             logo = f.read()

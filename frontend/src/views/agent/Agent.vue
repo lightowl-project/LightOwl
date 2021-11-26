@@ -33,7 +33,7 @@
           effect="dark"
         >
           <div
-            style="display: block;width: 100%;heigth:100%;padding: 0 10px"
+            style="display: block;width: 100%;height:100%;padding: 0 10px"
             @mouseover="hoverTag(true, tag)"
             @mouseout="hoverTag(false, tag)"
           >

@@ -136,6 +136,7 @@ class HTTPResponse(BaseModel):
     #     return v
     
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/http_response"
         color: str = "#f49b51"
         with open("./plugins/http_response/logo/http_response.png", 'rb') as f:
             logo = f.read()

@@ -3,7 +3,6 @@
     <el-steps :active="step" align-center>
       <el-step :title="$t('Select Plugin')" />
       <el-step :title="$t('Configure')" />
-      <!-- <el-step :title="$t('Finish')" /> -->
     </el-steps>
 
     <div v-if="step === 1">
@@ -74,37 +73,6 @@
         />
       </el-row>
     </div>
-    <!-- <div v-else-if="step === 3">
-      <el-row class="mt-2">
-        <AceEditor
-          v-model="configFile"
-          lang="ini"
-          theme="monokai"
-          width="100%"
-          height="400px"
-          :options="{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            fontSize: 14,
-            highlightActiveLine: true,
-            enableSnippets: true,
-            showLineNumbers: true,
-            tabSize: 2,
-            showPrintMargin: false,
-            showGutter: true,
-          }"
-          @init="editorInit"
-        />
-      </el-row>
-      <el-row class="text-center mt-2">
-        <el-button type="warning" plain @click="step--">
-          {{ $t("Back") }}
-        </el-button>
-        <el-button type="primary" @click="savePlugin()">
-          {{ $t("Save") }}
-        </el-button>
-      </el-row>
-    </div> -->
   </el-row>
 </template>
 
@@ -203,12 +171,6 @@ export default {
       }
     },
 
-    editorInit() {
-      require("brace/ext/language_tools") // language extension prerequsite...
-      require("brace/mode/ini")
-      require("brace/theme/monokai")
-    },
-
     renderStyle() {
       return `
         width: ${this.calculateFlipWidth()};
@@ -218,12 +180,6 @@ export default {
         color: #fff;
       `
     },
-
-    // finishConfiguration(configFile, finalConfiguration) {
-    //   this.finalConfiguration = finalConfiguration
-    //   this.configFile = configFile
-    //   this.step++
-    // },
 
     savePlugin(finalConfiguration) {
       const form = {

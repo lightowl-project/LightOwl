@@ -57,6 +57,7 @@ def get_plugin_config(plugin):
 
     config = plugin.SCHEMA.Config
     tmp["color"] = config.color
+    tmp["url"] = config.url
 
     if getattr(config, "img", None):
         tmp["img"] = getattr(config, "img", None)

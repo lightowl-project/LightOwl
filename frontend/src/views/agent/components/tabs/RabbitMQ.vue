@@ -4,7 +4,7 @@
       <el-col :md="12">
         <el-card v-loading="is_loading_time" class="no-radius stats-widget" shadow="always" style="margin-bottom: 10px">
           <div slot="header">
-            {{ $t("General") }}
+            {{ $t("Overview") }}
           </div>
           <time-chart ref="graph_rabbitmq_overview_connections" :options="optionsFormatNumbers" :date-range="dateRange" />
         </el-card>

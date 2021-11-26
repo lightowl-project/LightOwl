@@ -53,6 +53,7 @@ class Apache(BaseModel):
         return v
     
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/apache"
         color: str = "#70b548"
         with open("./plugins/apache/logo/apache.png", 'rb') as f:
             logo = f.read()

@@ -52,6 +52,7 @@ class Proxmox(BaseModel):
         return v
     
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/proxmox"
         color: str = "#70b548"
         with open("./plugins/proxmox/logo/proxmox.png", 'rb') as f:
             logo = f.read()

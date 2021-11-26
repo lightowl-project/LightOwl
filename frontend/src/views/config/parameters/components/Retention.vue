@@ -20,6 +20,9 @@
             placeholder="Select"
           >
             <el-option :label="$t('1 day')" value="1d" />
+            <el-option :label="$t('2 day')" value="2d" />
+            <el-option :label="$t('3 day')" value="3d" />
+            <el-option :label="$t('4 day')" value="4d" />
             <el-option :label="$t('1 week')" value="1w" />
             <el-option :label="$t('2 week')" value="2w" />
             <el-option :label="$t('3 week')" value="3w" />
@@ -60,7 +63,7 @@ export default defineComponent({
 
       request
         .post("/api/v1/config/retention", data)
-        .then((response) => {
+        .then(() => {
           this.$message({
             type: "success",
             message: this.$t("Retention successfully applied"),

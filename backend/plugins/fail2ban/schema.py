@@ -13,6 +13,7 @@ class Fail2ban(BaseModel):
     )
 
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/fail2ban"
         color: str = "#ef8383"
         with open("./plugins/fail2ban/logo/fail2ban.png", 'rb') as f:
             logo = f.read()

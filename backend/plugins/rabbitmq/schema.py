@@ -65,6 +65,7 @@ class RabbitMQ(BaseModel):
     )
     
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/rabbitmq"
         color: str = "#70b548"
         with open("./plugins/rabbitmq/logo/rabbitmq.png", 'rb') as f:
             logo = f.read()

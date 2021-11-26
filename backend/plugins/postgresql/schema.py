@@ -19,6 +19,7 @@ class Postgresql(BaseModel):
     )
 
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/postgresql"
         color: str = "#ef8383"
         with open("./plugins/postgresql/logo/postgresql.png", 'rb') as f:
             logo = f.read()

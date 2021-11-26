@@ -76,7 +76,6 @@ export default defineComponent({
         this.is_loading_time = false
         for (const element of this.time) {
           const series = this.formatTimeSeries(element, data)
-          console.log(series)
           this.$refs[`graph_${element.measurement}_${element.fields[0]}`].updateSeries(series)
           if (element.colors) { this.$refs[`graph_${element.measurement}_${element.fields[0]}`].updateColors(element.colors) }
         }

@@ -113,8 +113,6 @@ class Ping(BaseModel):
         return v
     
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/ping"
         color: str = "#f49b51"
         icon: str = "fa fa-paper-plane"
-        metrics: dict = {
-            "result_code": "success = 0, no such host = 1, ping error = 2"
-        }

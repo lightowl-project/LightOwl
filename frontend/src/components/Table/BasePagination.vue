@@ -19,7 +19,7 @@
       <template v-slot:next-text>
         <a class="page-link" aria-label="Next">
           <span aria-hidden="true">
-            <i class="fa fa-angle-right" aria-hidden="true"/>
+            <i class="fa fa-angle-right" aria-hidden="true" />
           </span>
         </a>
       </template>

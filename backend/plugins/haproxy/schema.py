@@ -33,6 +33,7 @@ class Haproxy(BaseModel):
     )
 
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/haproxy"
         color: str = "#ef8383"
         with open("./plugins/haproxy/logo/haproxy.png", 'rb') as f:
             logo = f.read()

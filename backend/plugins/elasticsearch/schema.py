@@ -83,6 +83,7 @@ class Elasticsearch(BaseModel):
     )
         
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/elasticsearch"
         color: str = "#83dbd3"
         with open("./plugins/elasticsearch/logo/elasticsearch.png", 'rb') as f:
             logo = f.read()

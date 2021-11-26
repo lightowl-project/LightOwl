@@ -18,6 +18,7 @@ class Redis(BaseModel):
     )
 
     class Config:
+        url: str = "https://github.com/influxdata/telegraf/tree/master/plugins/inputs/redis"
         color: str = "#ef8383"
         with open("./plugins/redis/logo/redis.png", 'rb') as f:
             logo = f.read()
