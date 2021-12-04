@@ -91,6 +91,10 @@ export default defineComponent({
   },
 
   mounted() {
+    EventBus.$on("new_agent", () => {
+      this.getAgents()
+    })
+
     EventBus.$on("measurements", (measurements) => {
       for (const body of measurements) {
         const measurement = body.measurement

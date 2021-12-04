@@ -1,4 +1,3 @@
-from apps.agent.models import Agent
 from toolkits.exceptions import InvalidOperator, MailSettingsNotConfigured
 from apps.config.models import Config, MailSettings
 from worker.mongo_connect import mongo_connect
@@ -6,6 +5,7 @@ from toolkits.rabbitmq.rabbit import push_message
 from apps.alert.models import Alert, AlertLine
 from apps.config.schema import MailSchema
 from datetime import datetime, timedelta
+from apps.agent.models import Agent
 from toolkits.mail import MailToolkit
 from apps.rule.models import Rule
 from toolkits.influx import Influx

@@ -4,6 +4,7 @@ from starlette.responses import FileResponse, Response
 from plugins.utils import get_plugin, get_plugin_config
 from toolkits.paginate import TableParam, paginate
 from apps.input.schema import InputCreateSchema
+from toolkits.rabbitmq.rabbit import push_message
 from fastapi.exceptions import HTTPException
 from fastapi import APIRouter, Request, status
 from fastapi.param_functions import Depends
@@ -137,6 +138,15 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
     
     shutil.copyfile("/etc/ssl/lightowl/ca.pem", f"{dir_name}/ca.pem")
     make_archive(dir_name, "/tmp/lightowl-agent.zip")
+
+    message: dict = {
+        "ip_address": agent.ip_address,
+        "hostname": agent.hostname,
+        "message": "new_agent",
+        "os": agent.os
+    }
+
+    push_message(message)
     return FileResponse("/tmp/lightowl-agent.zip")
 
 
