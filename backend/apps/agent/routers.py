@@ -45,11 +45,13 @@ def make_archive(source, destination):
 async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app = Depends(AgentAuthParams)):
     client_ip: str = request.headers["x-forwarded-for"]
 
+    new: bool = False
     config = Config.objects.get()
 
     try:
         agent = Agent.objects(hostname=agent_join_schema.hostname, ip_address=client_ip).get()
     except Agent.DoesNotExist:
+        new: bool = True
         agent = Agent(
             hostname=agent_join_schema.hostname,
             os=agent_join_schema.os,
@@ -139,11 +141,11 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
     shutil.copyfile("/etc/ssl/lightowl/ca.pem", f"{dir_name}/ca.pem")
     make_archive(dir_name, "/tmp/lightowl-agent.zip")
 
-    message: dict = {
-        "message": "new_agent"
-    }
+    if new:
+        push_message({
+            "message": "new_agent"
+        })
 
-    push_message(message)
     return FileResponse("/tmp/lightowl-agent.zip")
 
 
