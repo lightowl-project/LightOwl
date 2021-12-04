@@ -111,7 +111,7 @@ export default {
             showClose: true,
             type: "success",
             dangerouslyUseHTMLString: true,
-            message: `<p>${this.$t("New agent configured")}: <b>${this.$t("Hostname")}: ${data.hostname}</b></p><p>${this.$t("IP Address")}: ${data.ip_address}</b><p>${this.$t("OS")}: ${data.os}</b></p>`
+            message: `<p>${this.$t("New agent configured")}</p>`
           })
 
           EventBus.$emit("new_agent")

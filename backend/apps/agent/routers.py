@@ -140,10 +140,7 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
     make_archive(dir_name, "/tmp/lightowl-agent.zip")
 
     message: dict = {
-        "ip_address": agent.ip_address,
-        "hostname": agent.hostname,
-        "message": "new_agent",
-        "os": agent.os
+        "message": "new_agent"
     }
 
     push_message(message)
