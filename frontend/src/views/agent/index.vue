@@ -151,6 +151,7 @@
 <script>
 import LightOwlTable from "@/components/Table/index.vue"
 import renderMixin from "@/mixins/renderMixin"
+import EventBus from "@/event-bus"
 import request from "@/utils/request"
 
 export default {
@@ -173,6 +174,12 @@ export default {
     request.get("/api/v1/config/").then((response) => {
       this.config = response.data
       this.install_script = `bash ./install_plateform ${this.config.ip_address} ${this.config.agent_token}`
+    })
+  },
+
+  mounted() {
+    EventBus.$on("reload", () => {
+      this.refreshTable()
     })
   },
 

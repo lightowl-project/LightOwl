@@ -85,6 +85,7 @@ def throw_alert(rule: Rule, agent: Agent, metric: Any, pattern: Any):
         )
 
         message: dict = {
+            "type": "alert",
             "alert": str(alert.pk),
             "agent_id": str(alert.agent.pk),
             "rule": alert.rule.name,

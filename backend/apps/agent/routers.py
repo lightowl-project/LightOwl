@@ -143,7 +143,11 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
 
     if new:
         push_message({
-            "message": "new_agent"
+            "os": agent.os,
+            "type": "message",
+            "message": "new_agent",
+            "hostname": agent.hostname,
+            "ip_address": agent.ip_address
         })
 
     return FileResponse("/tmp/lightowl-agent.zip")
@@ -190,6 +194,12 @@ async def delete_agent(agent_id: str, app = Depends(BothAuthParams)):
     try:
         agent = Agent.objects(pk=agent_id).get()
         agent.delete()
+
+        push_message({
+            "type": "message",
+            "message": "del_agent"
+        })
+
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     except Agent.DoesNotExist:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)

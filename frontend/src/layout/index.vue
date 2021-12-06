@@ -105,16 +105,24 @@ export default {
             })
             EventBus.$emit("reload")
           }
-        } else if (data.message === "new_agent") {
-          this.message = this.$message({
-            duration: 20000,
-            showClose: true,
-            type: "success",
-            dangerouslyUseHTMLString: true,
-            message: `<p>${this.$t("New agent configured")}</p>`
-          })
+        } else if (data.type === "message") {
+          if (data.message === "new_agent") {
+            EventBus.$emit("reload")
+            const html = `<p>${this.$t("New agent configured")}:</p><p><b>${this.$t("IP Address")}:</b> ${data.ip_address}</p><p><b>${this.$t("Hostname")}:</b> ${data.hostname}</p><p><b>${this.$t("OS")}:</b> ${data.os}</p>`
+            if (this.message) {
+              this.message.close()
+            }
 
-          EventBus.$emit("new_agent")
+            this.message = this.$message({
+              duration: 10000,
+              showClose: true,
+              type: "success",
+              dangerouslyUseHTMLString: true,
+              message: html
+            })
+          } else if (data.message === "del_agent") {
+            EventBus.$emit("reload")
+          }
         }
       }
     }

@@ -56,9 +56,14 @@ class RealTime:
             result = re.search(regex, element)
             if not result:
                 try:
-                    alert = json.loads(element)
-                    alerts.append(alert)
+                    data = json.loads(element)
+                    if data["type"] == "alert":
+                        alerts.append(data)
+                    elif data["type"] == "message":
+                        return [], [], data
+
                     continue
+
                 except json.JSONDecodeError:
                     continue
 
@@ -98,11 +103,11 @@ class RealTime:
             })
 
 
-        return to_be_parsed, alerts
+        return to_be_parsed, alerts, None
 
     async def _notify(self, message: IncomingMessage):
         living_connections = []
-        to_be_parsed, alerts = self.handle_message(message.body)
+        to_be_parsed, alerts, message = self.handle_message(message.body)
 
         if len(to_be_parsed) > 0:
             parseMessage.apply_async([json.dumps(to_be_parsed)], expires=10)
@@ -121,6 +126,16 @@ class RealTime:
                 websocket = self.connections.pop()
                 try:
                     await websocket.send_text(json.dumps({"alerts": alerts}))
+                except Exception:
+                    continue
+
+                living_connections.append(websocket)
+
+        if message:
+            while len(self.connections) > 0:
+                websocket = self.connections.pop()
+                try:
+                    await websocket.send_text(json.dumps(message))
                 except Exception:
                     continue
 
