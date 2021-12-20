@@ -12,11 +12,13 @@ def get_mapping() -> dict:
     from .system import System
     from .docker import Docker
     from .redis import Redis
+    from .bind import Bind
     from .ping import Ping
 
 
     return {
         "ping": Ping,
+        "bind": Bind,
         "redis": Redis,
         "system": System,
         "docker": Docker,

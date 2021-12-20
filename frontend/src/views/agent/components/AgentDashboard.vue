@@ -47,6 +47,7 @@ export default defineComponent({
     system_plugin_id: null,
     inputs: [],
     dashboards: {
+      "bind": () => import("./tabs/Bind.vue"),
       "redis": () => import("./tabs/Redis.vue"),
       "apache": () => import("./tabs/Apache.vue"),
       "docker": () => import("./tabs/Docker.vue"),
