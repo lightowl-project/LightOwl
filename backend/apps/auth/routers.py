@@ -1,5 +1,5 @@
 from .tools import authenticate_user, check_password_length, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, hash_password, verify_password
-from .schema import APIKeyCreateSchema, UserCreateSchema, UserUpdateSchema, APIKeySchema, LightOwlInstallSchema, UserSchema
+from .schema import APIKeyCreateSchema, UserCreateSchema, UserUpdatePasswordSchema, UserUpdateSchema, APIKeySchema, LightOwlInstallSchema, UserSchema
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from ..common import BothAuthParams, UserAuthParams
@@ -78,7 +78,7 @@ async def profile(app = Depends(BothAuthParams)):
 
 
 @router.put("/profile", status_code=status.HTTP_204_NO_CONTENT)
-async def update_profile(user_update: UserUpdateSchema, app = Depends(BothAuthParams)):
+async def update_profile(user_update: UserUpdatePasswordSchema, app = Depends(BothAuthParams)):
     user = app.user
     user.username = user_update.username
     if user_update.current_password:

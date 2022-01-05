@@ -215,7 +215,7 @@ async def get_agent_config(agent_id: str, app = Depends(AgentAuthParams)):
         config: list = []
         for input_obj in Input.objects(agent=agent):
             plugin: Plugin = get_plugin(input_obj.plugin_name)(input_obj)
-            config.append(plugin.generate_conf())
+            config.append(plugin.generate_conf(os=agent.os))
 
         return "\n\n".join(config)
  

@@ -43,7 +43,7 @@ class UserSchema(BaseModel):
         }
 
 
-class UserUpdateSchema(BaseModel):
+class UserUpdatePasswordSchema(BaseModel):
     username: str
     current_password: str = ""
     new_password: str = ""
@@ -61,4 +61,4 @@ class LightOwlInstallSchema(UserCreateSchema):
     lightowl_token: str
 
 class UserUpdateSchema(BaseModel):
-    disabled: bool
+    disabled: bool = False

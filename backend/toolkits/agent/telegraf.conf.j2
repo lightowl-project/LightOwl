@@ -172,6 +172,8 @@
   ## Optional TLS Config
   {% if os == "Linux" %}
   tls_ca = "/etc/ssl/lightowl/ca.pem"
+  {% elif os == "Windows" %}
+  tls_ca = "C:\\Program Files\\lightowl\\ssl\\ca.pem"
   {% endif %}
   # tls_cert = "/etc/telegraf/cert.pem"
   # tls_key = "/etc/telegraf/key.pem"
