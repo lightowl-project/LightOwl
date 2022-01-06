@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="agent">
     <el-row :gutter="10" style="margin: 10px 0;">
       <el-col :md="4">
         <el-card v-loading="is_loading_stats" class="no-radius stats-widget" shadow="always" :body-style="{padding: 0}">
@@ -28,7 +28,7 @@
           <h2 class="text-center" v-html="load1" />
         </el-card>
       </el-col>
-      <el-col :md="2">
+      <el-col v-if="agent.os !== 'Windows'" :md="2">
         <el-card v-loading="is_loading_stats" class="no-radius stats-widget" shadow="always" :body-style="{padding: 0}">
           <div slot="header">
             {{ $t("Threads") }}
@@ -37,7 +37,7 @@
           <h2 class="text-center" v-html="total_threads" />
         </el-card>
       </el-col>
-      <el-col :md="2">
+      <el-col v-if="agent.os !== 'Windows'" :md="2">
         <el-card v-loading="is_loading_stats" class="no-radius stats-widget" shadow="always" :body-style="{padding: 0}">
           <div slot="header">
             {{ $t("Processes") }}
@@ -46,7 +46,7 @@
           <h2 class="text-center" v-html="total_processes" />
         </el-card>
       </el-col>
-      <el-col :md="2">
+      <el-col v-if="agent.os !== 'Windows'" :md="2">
         <el-card v-loading="is_loading_stats" :style="renderStyle('zombies')" class="no-radius stats-widget" shadow="always" :body-style="{padding: 0}">
           <div slot="header">
             {{ $t("Zombies") }}
@@ -111,7 +111,7 @@
           </el-card>
         </el-col>
 
-        <el-col :md="24" :xl="12" style="margin: 10px 0">
+        <el-col :md="24" :xl="24" style="margin: 10px 0">
           <el-card v-loading="is_loading_time" class="no-radius stats-widget" shadow="always" :body-style="{padding: 0}">
             <div slot="header">
               {{ $t("Memory Usage") }}
@@ -120,7 +120,7 @@
           </el-card>
         </el-col>
 
-        <el-col :md="24" :xl="12" style="margin-top: 10px">
+        <el-col v-if="agent.os !== 'Windows'" :md="24" :xl="24" style="margin-top: 10px">
           <el-card v-loading="is_loading_time" class="no-radius stats-widget" shadow="always" :body-style="{padding: 0}">
             <div slot="header">
               {{ $t("Processes") }}
@@ -174,6 +174,7 @@ export default defineComponent({
     is_loading_stats: true,
     load1: 0,
     nb_cpus: 0,
+    agent: null,
     uptime: "",
     total_threads: 0,
     total_processes: 0,
@@ -257,10 +258,13 @@ export default defineComponent({
 
   async beforeMount() {
     const response = await request.get(`/api/v1/agents/${this.agent_id}`)
-    const agent = response.data
-    switch (agent.os) {
+    this.agent = response.data
+    switch (this.agent.os) {
       case "Linux":
         this.max.disk.where = "path = '/'"
+        break
+      case "Windows":
+        this.max.disk.where = "device = 'C:'"
         break
     }
   },
@@ -298,7 +302,7 @@ export default defineComponent({
 
         this.$refs.graphCPU.updateData(parseInt(100 - data["cpu.usage_idle"]))
         this.$refs.graphMEM.updateData(parseFloat(data["mem.used_percent"]))
-        this.load1 = parseFloat(data["system.load1"])
+        this.load1 = parseFloat(data["system.load1"]).toFixed(2)
         this.nb_cpus = parseInt(data["system.n_cpus"])
         this.total_threads = parseInt(data["processes.total_threads"])
         this.total_processes = parseInt(data["processes.total"])
@@ -312,6 +316,10 @@ export default defineComponent({
       } else if (graph_type === "time") {
         this.is_loading_time = false
         for (const element of this.time) {
+          if (element.measurement === "processes" && this.agent.os === "Windows") {
+            continue
+          }
+
           const series = this.formatTimeSeries(element, data)
           this.$refs[`graph_${element.measurement}_${element.fields[0]}`].updateSeries(series)
           if (element.colors) { this.$refs[`graph_${element.measurement}_${element.fields[0]}`].updateColors(element.colors) }

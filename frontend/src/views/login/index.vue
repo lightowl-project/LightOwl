@@ -12,9 +12,13 @@
       auto-complete="on"
       label-position="left"
     >
-      <div class="title-container">
-        <h3 class="title" />
-      </div>
+      <el-alert
+        v-if="error"
+        :title="error"
+        type="error"
+        effect="dark"
+        class="mb-2"
+      />
 
       <el-form-item prop="username">
         <span class="svg-container">
@@ -78,6 +82,7 @@ export default {
   name: "Login",
   data() {
     return {
+      error: "",
       loginForm: {
         username: "",
         password: ""
@@ -115,6 +120,7 @@ export default {
       })
     },
     handleLogin() {
+      this.error = ""
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true
@@ -125,7 +131,10 @@ export default {
               this.$router.push({ path: this.redirect || "/" })
               this.loading = false
             })
-            .catch(() => {
+            .catch((err) => {
+              if (err.response.status === 403) {
+                this.error = this.$t("Invalid credentials")
+              } 
               this.loading = false
             })
         } else {
