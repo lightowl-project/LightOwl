@@ -1,11 +1,11 @@
 from ..mongo_connect import mongo_connect
 from apps.agent.models import Agent
 from apps.rule.models import Rule
+from worker.main import celery
 from .rules import executeRule
 from config import settings
 import logging.config
 import logging
-import celery
 import json
 
 logging.config.dictConfig(settings.LOGGING)
@@ -37,3 +37,6 @@ def parseMessage(self, data: str):
             executeRule.apply_async([str(rule.pk), str(agent.pk), json.dumps(tags)])
 
     self.update_state(state=celery.states.SUCCESS)
+
+
+celery.register_task(parseMessage)

@@ -1,4 +1,4 @@
-from .tasks import parseMessage, executeRule
+# from .tasks import parseMessage, executeRule
 from config import settings
 from celery import Celery
 
@@ -12,8 +12,8 @@ celery = Celery("lightowl", broker=broker_url)
 
 celery.conf.task_routes = {}
 
-celery.register_task(parseMessage)
-celery.register_task(executeRule)
+# celery.register_task(parseMessage)
+# celery.register_task(executeRule)
 
 
 # celery.steps['consumer'].add(AMQPRetryConsumerStep)
