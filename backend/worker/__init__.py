@@ -1,1 +1,1 @@
-from .main import celery
+from .main import app as celery

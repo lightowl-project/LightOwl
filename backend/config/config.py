@@ -30,6 +30,7 @@ class AppSettings(BaseSettings):
     CA_PATH: str = "/etc/ssl/lightowl/ca.pem"
     SECRET_KEY: str = SECRET_KEY
     VERSION: float = 0.1
+    CELERY_IMPORTS: tuple = ("worker.tasks",)
 
 
 class RedisSettings(BaseSettings):

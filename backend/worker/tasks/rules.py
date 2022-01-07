@@ -9,12 +9,13 @@ from apps.agent.models import Agent
 from toolkits.mail import MailToolkit
 from apps.rule.models import Rule
 from toolkits.influx import Influx
-from worker.main import celery
+from worker.main import app as celery_app
 from config import settings
 from typing import Any
 from redis import Redis
 import logging.config
 import logging
+import celery
 import json
 
 logging.config.dictConfig(settings.LOGGING)
@@ -144,7 +145,7 @@ def check_duration(rule: Rule, agent: Agent, metric: Any, pattern: Any):
         throw_alert(rule, agent, metric, pattern)
 
 
-@celery.task(bind=True, name="executeRule")
+@celery_app.task(bind=True, name="executeRule")
 @mongo_connect
 def executeRule(self, rule_id: str, agent_id: str, tags: str):
     self.update_state(state=celery.states.STARTED)
@@ -185,6 +186,3 @@ def executeRule(self, rule_id: str, agent_id: str, tags: str):
         logger.critical(error, exc_info=1)
         self.update_state(state=celery.states.FAILURE)
         raise celery.exceptions.Ignore()
-
-
-celery.register_task(executeRule)
