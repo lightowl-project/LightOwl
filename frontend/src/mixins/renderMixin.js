@@ -23,6 +23,10 @@ const renderMixin = {
       return size
     },
 
+    render_asset_label(agent) {
+      return `${agent.ip_address} - ${agent.hostname}`
+    },
+
     renderUPtime(uptime_seconds) {
       const uptime_moment = moment.duration({ seconds: uptime_seconds })
 

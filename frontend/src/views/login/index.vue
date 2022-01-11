@@ -134,7 +134,7 @@ export default {
             .catch((err) => {
               if (err.response.status === 403) {
                 this.error = this.$t("Invalid credentials")
-              } 
+              }
               this.loading = false
             })
         } else {

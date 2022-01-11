@@ -17,7 +17,7 @@
           <el-option
             v-for="agent in agents"
             :key="agent._id"
-            :label="agent.ip_address"
+            :label="render_asset_label(agent)"
             :value="agent._id"
           />
         </el-select>

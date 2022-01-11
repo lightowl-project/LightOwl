@@ -19,7 +19,7 @@
         <el-col v-if="!rule._id" :md="8">
           <el-form-item :label="$t('Agents')">
             <el-select v-model="rule.agents" style="width: 100%" filterable multiple>
-              <el-option v-for="agent in agents_choices" :key="agent._id" :label="agent.ip_address" :value="agent._id" />
+              <el-option v-for="agent in agents_choices" :key="agent._id" :label="render_asset_label(agent)" :value="agent._id" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -191,9 +191,11 @@
 <script>
 import request from "@/utils/request"
 import Chart from "@/components/Chart.vue"
+import renderMixin from "@/mixins/renderMixin.js"
 import { defineComponent } from "@vue/composition-api"
 
 export default defineComponent({
+  mixins: [renderMixin],
   components: { Chart },
   props: {
     agent_id: {

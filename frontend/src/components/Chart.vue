@@ -31,7 +31,7 @@ export default defineComponent({
     },
     type: {
       type: String,
-      default: "area"
+      default: "line"
     },
     height: {
       type: String,
@@ -48,6 +48,9 @@ export default defineComponent({
     chartOptions: {
       legend: { show: true },
       chart: { toolbar: { show: false }},
+      dataLabels: { enabled: true },
+      stroke: { curve: "smooth" },
+      // colors: [],
       xaxis: {
         type: "datetime",
         labels: {
@@ -61,6 +64,11 @@ export default defineComponent({
     series: [],
     agents: {}
   }),
+
+  beforeMount() {
+    if (this.collector.pattern) {
+    }
+  },
 
   mounted() {
     this.fetchData()
@@ -102,9 +110,38 @@ export default defineComponent({
           const agent = await this.fetchAgents(param.agent_id)
           datasets.push({
             name: agent.ip_address,
-            data: data
+            type: "area",
+            data: data,
+            fill: {
+              type: 'gradient',
+              gradient: {
+                  shadeIntensity: 1,
+                  inverseColors: false,
+                  opacityFrom: 0.45,
+                  opacityTo: 0.05,
+                  stops: [20, 100, 100, 100]
+                },
+            }
           })
         }
+
+        const pattern = parseFloat(this.collector.pattern)
+        if (pattern) {
+          this.chartOptions.colors = ["green", "red"]
+          const tmp_threshold = []
+
+          for (const obj of datasets[0].data) {
+            tmp_threshold.push([obj[0], pattern])
+          }
+
+          datasets.push({
+            name: "Threshold",
+            type: "line",
+            data: tmp_threshold,
+            color: "#F56C6C",
+          })
+        }
+
         this.$refs.graph.updateSeries(datasets)
       })
     }
