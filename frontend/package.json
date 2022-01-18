@@ -22,7 +22,7 @@
     "apexcharts": "^3.28.1",
     "axios": "0.23.0",
     "bytes-iec": "^3.1.1",
-    "core-js": "3.18.3",
+    "core-js": "3.20.1",
     "echarts": "^5.2.1",
     "element-ui": "2.15.6",
     "js-cookie": "2.2.1",
