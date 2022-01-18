@@ -127,6 +127,12 @@
         </span>
         <agent-dashboard ref="dashboard" :agent_id="agent_id" :date-range="dateRange" :selected-date="selectedDate" :interval="interval" />
       </el-tab-pane>
+      <el-tab-pane name="paquets">
+        <span slot="label">
+          <i class="fa fa-database" /> {{ $t("Softwares") }}
+        </span>
+        <softwares :agent="agent" />
+      </el-tab-pane>
       <el-tab-pane name="alerts">
         <span slot="label">
           <i class="fa fa-bell mr-1" />{{ $t("Alerts") }}
@@ -259,6 +265,7 @@ import moment from "moment"
 import request from "@/utils/request"
 import statsMixin from "@/mixins/statsMixin"
 import renderMixin from "@/mixins/renderMixin"
+import Softwares from "./components/Softwares.vue"
 import EditInput from "@/views/input/EditInput.vue"
 import AlertList from "@/components/AlertList.vue"
 import DateRangePicker from "vue2-daterange-picker"
@@ -266,7 +273,7 @@ import "vue2-daterange-picker/dist/vue2-daterange-picker.css"
 import AgentDashboard from "./components/AgentDashboard.vue"
 
 export default {
-  components: { EditInput, Rules, AlertList, AgentDashboard, DateRangePicker },
+  components: { EditInput, Rules, AlertList, AgentDashboard, DateRangePicker, Softwares },
   mixins: [renderMixin, statsMixin],
 
   props: {

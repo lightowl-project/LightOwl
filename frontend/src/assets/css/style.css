@@ -313,3 +313,8 @@
 .el-input__suffix {
     top: -2px !important;
 }
+
+.green {
+    background-color: #67c23a !important;
+    border-color: #67c23a !important;
+}

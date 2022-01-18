@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <el-card :body-style="{margin: 0, padding: 0}">
-      <el-table ref="table" :row-class-name="tableRowClassName" stripe :loading="is_loading" :data="agents" style="width: 100%" highlight-current-row :default-sort="defaultSort" row-key="_id" @row-click="showDetail">
+      <el-table ref="table" stripe :loading="is_loading" :data="agents" style="width: 100%" highlight-current-row :default-sort="defaultSort" row-key="_id" @row-click="showDetail">
         <el-table-column type="expand">
           <template slot-scope="{ row }">
             <agent :prop-agent="row._id" />
@@ -10,7 +10,7 @@
 
         <el-table-column :label="$t('Agent')" prop="ip_address" sortable>
           <div slot-scope="{ row }">
-            <i v-if="is_down(row.last_seen)" class="fa fa-exclamation-triangle" />
+            <i :class="renderOSIcon(row.os)" />
             {{ row.ip_address }} - {{ row.hostname }}
 
             <span style="float: right">
@@ -42,7 +42,9 @@
         </el-table-column>
         <el-table-column :label="$t('Last seen')" prop="last_seen" width="150" sortable>
           <div slot-scope="{ row }">
-            {{ renderLastSeen(row.last_seen) }}
+            <el-tag :class="tableRowClassName(row)" effect="dark">
+              {{ renderLastSeen(row.last_seen) }}
+            </el-tag>
           </div>
         </el-table-column>
         <el-table-column :label="$t('Alerts')" prop="alerts" sortable>
@@ -136,17 +138,17 @@ export default defineComponent({
       return moment.utc().diff(date, "minutes") > 5
     },
 
-    tableRowClassName({ row }) {
+    tableRowClassName(row) {
       const date = moment.utc(row.last_seen)
       const diff = moment.utc().diff(date, "minutes")
 
       if (diff > 10) {
-        return "danger-row"
+        return "danger"
       } else if (diff > 2) {
-        return "warning-row"
+        return "warning"
       }
 
-      return ""
+      return "green"
     },
 
     renderLastSeen(date) {
@@ -223,6 +225,7 @@ export default defineComponent({
             hostname: agent.hostname,
             last_seen: agent.last_seen,
             alerts: agent.alerts,
+            os: agent.os,
             tags: agent.tags,
             cpu: this.last_stats[agent_id].cpu,
             mem: this.last_stats[agent_id].mem,

@@ -7,6 +7,16 @@ from datetime import datetime
 from bson import ObjectId
 
 
+class SoftwareSchema(BaseModel):
+    name: str
+    version: str
+    vendor: str = ""
+
+
+class UpdateSoftwareSchema(BaseModel):
+    softwares: List[SoftwareSchema]
+
+
 class AgentSchema(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     hostname: str
@@ -14,6 +24,7 @@ class AgentSchema(BaseModel):
     last_seen: Optional[datetime]
     tags: List[str] = []
     os: str
+    softwares: List[SoftwareSchema] = []
 
     class Config:
         orm_mode: bool = True

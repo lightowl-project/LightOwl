@@ -69,8 +69,8 @@ export default defineComponent({
       measurement: "bind_counter",
       fields: ["QUERY", "IQUERY", "STATUS", "NOTIFY", "UPDATE"]
     }, {
-        measurement: "bind_counter",
-        fields: ["Requestv4", "ReqEdns0", "Response", "RespEDNS0", "QrySuccess", "QryAuthAns", "QryNoauthAns", "QryNxrrset", "QryNXDOMAIN", "QryRecursion", "QryDuplicate", "QryUDP"]
+      measurement: "bind_counter",
+      fields: ["Requestv4", "ReqEdns0", "Response", "RespEDNS0", "QrySuccess", "QryAuthAns", "QryNoauthAns", "QryNxrrset", "QryNXDOMAIN", "QryRecursion", "QryDuplicate", "QryUDP"]
     }]
   }),
 

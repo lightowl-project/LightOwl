@@ -65,10 +65,7 @@ export default defineComponent({
     agents: {}
   }),
 
-  beforeMount() {
-    if (this.collector.pattern) {
-    }
-  },
+  beforeMount() {},
 
   mounted() {
     this.fetchData()
@@ -113,14 +110,14 @@ export default defineComponent({
             type: "area",
             data: data,
             fill: {
-              type: 'gradient',
+              type: "gradient",
               gradient: {
-                  shadeIntensity: 1,
-                  inverseColors: false,
-                  opacityFrom: 0.45,
-                  opacityTo: 0.05,
-                  stops: [20, 100, 100, 100]
-                },
+                shadeIntensity: 1,
+                inverseColors: false,
+                opacityFrom: 0.45,
+                opacityTo: 0.05,
+                stops: [20, 100, 100, 100]
+              }
             }
           })
         }
@@ -138,7 +135,7 @@ export default defineComponent({
             name: "Threshold",
             type: "line",
             data: tmp_threshold,
-            color: "#F56C6C",
+            color: "#F56C6C"
           })
         }
 

@@ -395,5 +395,8 @@
     "HTTP Errors": "HTTP Errors",
     "Messages": "Messages",
     "File descriptor": "File descriptor",
-    "Connected Clients": "Connected Clients"
+    "Connected Clients": "Connected Clients",
+    "Softwares": "Softwares",
+    "Version": "Version",
+    "Vendor": "Vendor"
 }

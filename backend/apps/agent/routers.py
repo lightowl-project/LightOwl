@@ -1,4 +1,4 @@
-from .schema import AgentSchema, AgentJoinSchema, AgentAlertSchema, UpdateAgentSchema
+from .schema import AgentSchema, AgentJoinSchema, AgentAlertSchema, UpdateSoftwareSchema, UpdateAgentSchema
 from apps.common import BothAuthParams, AgentAuthParams
 from starlette.responses import FileResponse, Response
 from plugins.utils import get_plugin, get_plugin_config
@@ -11,15 +11,14 @@ from fastapi.param_functions import Depends
 from apps.input.schema import InputSchema
 from apps.alert.schema import AlertSchema
 from apps.config.models import Config
+from .models import Agent, Software
 from apps.input.models import Input
 from apps.alert.models import Alert
 from plugins.plugins import Plugin
 from datetime import datetime
 from config import settings
-from .models import Agent
 from typing import List
 import logging.config
-import tempfile
 import logging
 import jinja2
 import shutil
@@ -66,6 +65,9 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
 
         # When installing agent on LightOwl server, enable some plugins by default
         if client_ip == config.ip_address:
+            agent.tags = ["LightOwl Server"]
+            agent.save()
+
             default_plugins: dict = {
                 "docker": {},
                 "mongodb": {
@@ -172,7 +174,7 @@ async def get_agent(agent_id: str, alerts: bool = False, app = Depends(BothAuthP
             agent = agent.to_mongo()
             agent["alerts"] = alerts_list
 
-        return agent
+        return agent.to_mongo()
     except Agent.DoesNotExist:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     
@@ -219,6 +221,24 @@ async def get_agent_config(agent_id: str, app = Depends(AgentAuthParams)):
 
         return "\n\n".join(config)
  
+    except Agent.DoesNotExist:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+
+@router.post("/packages/{agent_id}")
+async def post_agent_package(agent_id: str, update_softwares: UpdateSoftwareSchema, app = Depends(AgentAuthParams)):
+    try:
+        agent = Agent.objects(pk=agent_id).get()
+        new_softwares = []
+        for tmp in update_softwares.softwares:
+            soft = Software(**tmp.dict())
+            new_softwares.append(soft)
+
+        agent.softwares = new_softwares
+        agent.save()
+
+        return Response(status_code=status.HTTP_200_OK)
+
     except Agent.DoesNotExist:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
