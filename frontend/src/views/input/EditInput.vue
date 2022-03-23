@@ -17,6 +17,7 @@
               :body-style="{
                 padding: '5px 10px',
                 'background-color': '#405672',
+                'text-align': 'center',
                 height: '100%',
               }"
             >
@@ -48,14 +49,11 @@
                   </el-button>
                 </el-popover>
               </div>
-              <p class="text-center">
-                <i v-if="item.icon" :class="renderIcon(item.icon, 'large')" />
-                <img
-                  v-else-if="item.img"
-                  :width="item.img_size"
-                  :src="renderImage(item.img)"
-                >
-              </p>
+              <span class="text-center">
+                <h3 v-if="item.text" class="title-plugin"> {{ item.text }}</h3>
+                <i v-else-if="item.icon" :class="renderIcon(item.icon, 'large')" />
+                <img v-else-if="item.img" :width="item.img_size" :src="renderImage(item.img)">
+              </span>
             </el-card>
           </span>
         </div>

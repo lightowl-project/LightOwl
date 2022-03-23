@@ -30,8 +30,8 @@ def get_mapping() -> dict:
         "rabbitmq": RabbitMQ,
         "mongodb": MongoDB,
         "postgresql": Postgresql,
-        "httpresponse": HTTPResponse,
-        "elasticsearch": Elasticsearch
+        "elasticsearch": Elasticsearch,
+        "httpresponse": HTTPResponse
     }
 
 
@@ -58,8 +58,8 @@ def get_plugin_config(plugin):
     tmp = plugin.SCHEMA.schema()
 
     config = plugin.SCHEMA.Config
-    tmp["color"] = config.color
     tmp["url"] = config.url
+    tmp["text"] = getattr(config, "text", "")
 
     if getattr(config, "img", None):
         tmp["img"] = getattr(config, "img", None)

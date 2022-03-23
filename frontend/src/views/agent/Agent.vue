@@ -170,6 +170,7 @@
                 :body-style="{
                   padding: '5px 10px',
                   'background-color': '#405672',
+                  'text-align': 'center',
                   height: '100%'
                 }"
               >
@@ -219,17 +220,16 @@
                     </el-popover>
                   </div>
                 </div>
-                <p class="text-center">
-                  <i
-                    v-if="input.plugin.icon"
-                    :class="renderIcon(input.plugin.icon, 'large')"
-                  />
-                  <img
-                    v-else-if="input.plugin.img"
-                    :width="input.plugin.img_size"
-                    :src="renderImage(input.plugin.img)"
-                  >
-                </p>
+                <h3 v-if="input.plugin.text" class="title-plugin"> {{ input.plugin.text }}</h3>
+                <i
+                  v-else-if="input.plugin.icon"
+                  :class="renderIcon(input.plugin.icon, 'large')"
+                />
+                <img
+                  v-else-if="input.plugin.img"
+                  :width="input.plugin.img_size"
+                  :src="renderImage(input.plugin.img)"
+                >
               </el-card>
             </div>
           </el-row>

@@ -34,7 +34,7 @@ jobs:
           context: .
           file: ./lightowl.dockerfile
           push: true
-          tags: lightowlproject/server:0.1
+          tags: lightowlproject/server:0.2
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -44,7 +44,7 @@ jobs:
           context: .
           file: ./collector.dockerfile
           push: true
-          tags: lightowlproject/collector:0.1
+          tags: lightowlproject/collector:0.2
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -54,7 +54,7 @@ jobs:
           context: .
           file: ./worker.dockerfile
           push: true
-          tags: lightowlproject/worker:0.1
+          tags: lightowlproject/worker:0.2
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 

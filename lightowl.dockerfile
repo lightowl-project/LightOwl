@@ -5,7 +5,7 @@ RUN npm install -g npm@7.20.6
 RUN npm install
 RUN npm run build:prod
 
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+FROM python:3.10
 COPY ./backend/ /app
 WORKDIR /app
 COPY --from=build-stage /app/dist /app/templates
