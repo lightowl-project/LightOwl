@@ -29,7 +29,7 @@ class AppSettings(BaseSettings):
     PORT: int = 8000
     CA_PATH: str = "/etc/ssl/lightowl/ca.pem"
     SECRET_KEY: str = SECRET_KEY
-    VERSION: float = 0.1
+    VERSION: float = os.environ.get("version")
     CELERY_IMPORTS: tuple = ("worker.tasks",)
 
 

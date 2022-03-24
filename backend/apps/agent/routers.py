@@ -91,20 +91,20 @@ async def agent_join(agent_join_schema: AgentJoinSchema, request: Request, app =
                     "password": "lightowl",
                     "insecure_skip_verify": True
                 },
-                "snmptrap": {
-                    "listening_port" : 162,
-                    "mib_path" : [
-                        "/usr/share/snmp/mibs"
-                    ],
-                    "version" : "2c",
-                    "sec_name" : "",
-                    "auth_protocol" : "MD5",
-                    "auth_password" : "",
-                    "sec_level" : "authNoPriv",
-                    "priv_protocol" : "Null",
-                    "priv_password" : "",
-                    "timeout" : "5s"
-                }
+                # "snmptrap": {
+                #     "listening_port" : 162,
+                #     "mib_path" : [
+                #         "/usr/share/snmp/mibs"
+                #     ],
+                #     "version" : "2c",
+                #     "sec_name" : "",
+                #     "auth_protocol" : "MD5",
+                #     "auth_password" : "",
+                #     "sec_level" : "authNoPriv",
+                #     "priv_protocol" : "Null",
+                #     "priv_password" : "",
+                #     "timeout" : "5s"
+                # }
             }
 
             agent_join_schema.plugins.update(default_plugins)
