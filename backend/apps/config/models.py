@@ -22,6 +22,7 @@ class MailSettings(mongoengine.Document):
     auth = mongoengine.BooleanField(default=False)
     smtp_server = mongoengine.StringField(default="")
     smtp_port = mongoengine.IntField(default=587)
+    mail_from = mongoengine.StringField(default="")
     email = mongoengine.StringField(default="")
     password = mongoengine.StringField(default="")
     ssl = mongoengine.BooleanField(default=False)

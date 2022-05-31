@@ -55,6 +55,7 @@ async def save_mail_settings(form: MailSchema, app = Depends(BothAuthParams)):
 
         mail.auth = form.auth
         mail.smtp_server = form.smtp_server
+        mail.mail_from = form.mail_from
         mail.smtp_port = form.smtp_port
         mail.ssl = form.ssl
 

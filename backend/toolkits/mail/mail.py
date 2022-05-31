@@ -15,6 +15,7 @@ logger = logging.getLogger("api")
 class MailToolkit:
     def __init__(self, test_mail_schema: MailSchema):
         self.auth: bool = test_mail_schema.auth
+        self.mail_from = test_mail_schema.mail_from
         self.email: str = test_mail_schema.email
         self.password: str = test_mail_schema.password
         self.ssl: bool = test_mail_schema.ssl
@@ -48,7 +49,7 @@ class MailToolkit:
                 service = self.get_service()
             
             msg = MIMEMultipart('alternative')
-            msg['From'] = self.email
+            msg['From'] = self.mail_from
             msg['To'] = ",".join(to)
             msg['Subject'] = subject
 

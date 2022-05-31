@@ -18,6 +18,7 @@ class MailSchema(BaseModel):
     auth: bool = False
     smtp_server: str = ""
     smtp_port: str = 587
+    mail_from: str = ""
     email: str = ""
     password: str = ""
     ssl: bool = False
