@@ -27,6 +27,9 @@
           <el-form-item :label="$t('SMTP Port')">
             <el-input v-model="mail.smtp_port" type="number" />
           </el-form-item>
+          <el-form-item :label="$t('Mail From')">
+            <el-input v-model="mail.mail_from" />
+          </el-form-item>
           <el-form-item :label="$t('SSL')">
             <el-switch v-model="mail.ssl" />
           </el-form-item>
@@ -53,11 +56,12 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="testMailDialog = false">
+        <el-button @click="testMailDialog = false" size="mini">
           {{ $t("Cancel") }}
         </el-button>
         <el-button
           type="primary"
+          size="mini"
           :loading="isLoadingTestMail"
           @click="testMail()"
         >
@@ -81,6 +85,7 @@ export default defineComponent({
     mail: {
       auth: false,
       smtp_server: "",
+      mail_from: "",
       smtp_port: 587,
       email: "",
       password: "",
