@@ -198,6 +198,11 @@ export default {
 
     deleteAgent(data) {
       request.delete(`/api/v1/agents/${data._id}`).then(() => {
+        this.$message({
+          type: "success",
+          message: this.$t("Agent successfully deleted"),
+          showClose: true
+        })
         this.refreshTable()
       })
     },

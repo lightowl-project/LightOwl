@@ -23,7 +23,7 @@ class Plugin:
         input.config = self.SCHEMA(**config)
         self.plugin_obj = input
 
-    def generate_conf(self, agent=None, os=None):
+    def generate_conf(self, agent=None, os=None, ip=None):
         with open(self.CONFIG_FILE, 'r') as f:
             config = f.read()
 
@@ -31,6 +31,7 @@ class Plugin:
 
         plugin_config: dict = deepcopy(dict(self.plugin_obj.config))
         plugin_config["os"] = os
+        plugin_config["ip"] = ip
         return j2_template.render(plugin_config)
 
     def save(self, agent):

@@ -212,7 +212,14 @@ export default {
                   message: message,
                   showClose: true
                 })
+              } else {
               }
+            } else if (err.response.status === 500) {
+              this.$message({
+                type: 'error',
+                message: JSON.stringify(response.data.detail, null, indent=4),
+                showClose: true
+              })
             }
           })
       } else {

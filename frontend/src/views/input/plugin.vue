@@ -105,6 +105,7 @@
               <el-input
                 v-model="form[name]"
                 size="small"
+                :type="attrs.input_type === 'password' ? 'password' : 'text'"
                 style="width: 50%"
               /><br>
               <small v-html="attrs.description" />
